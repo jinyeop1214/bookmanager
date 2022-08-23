@@ -1,11 +1,17 @@
 import { NextPage } from "next";
 import Link from "next/link";
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
+import { User } from "../Interfaces";
 
-const signup: NextPage = () => {
+interface signupProps {
+	user: User;
+	setUser: (user: User) => void;
+}
+
+const signup: NextPage<signupProps> = ({ user, setUser }) => {
 	const [id, setId] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
-	const [name, setName] = useState<string>("");
+	const [nickname, setNickname] = useState<string>("");
 	const [wrongtext, setWrongText] = useState<string>("");
 
 	const onChangeId = (e: ChangeEvent<HTMLInputElement>) => {
@@ -19,7 +25,7 @@ const signup: NextPage = () => {
 	};
 
 	const onChangeDisplayName = (e: ChangeEvent<HTMLInputElement>) => {
-		setName(e.target.value);
+		setNickname(e.target.value);
 		setWrongText("");
 	};
 
@@ -33,18 +39,41 @@ const signup: NextPage = () => {
 	 * TODO: 회원가입 with DB
 	 * @returns
 	 */
-	const handleSignUp = () => {
-		if (id === "" || password === "" || name === "") {
+	const handleSignUp = async () => {
+		if (id === "" || password === "" || nickname === "") {
 			setWrongText("빈칸을 채워주세요.");
 			return;
 		}
+		const user = {
+			id,
+			password,
+			nickname,
+		};
+		const response = await fetch("/api/user", {
+			method: "post",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(user),
+		});
+		const body = await response.json();
+		console.log(body);
+		// try {
+		// 	const result = await excuteQuery({
+		// 		query: `INSERT INTO users (id, password, nickname) VALUES(?, ?, ?)`,
+		// 		values: [id, password, nickname],
+		// 	});
+		// 	console.log(result);
+		// } catch (error) {
+		// 	console.log(error);
+		// }
 	};
 
 	return (
 		<div className="container">
 			<div className="title">
-				{/* {!user.isloggedIn ? ( */}
-				{true ? (
+				{!user.isloggedIn ? (
+					// {true ? (
 					<Link href="/">
 						<a className="link">Book Manager</a>
 					</Link>
@@ -71,7 +100,7 @@ const signup: NextPage = () => {
 			/>
 			<input
 				className="displayName"
-				value={name}
+				value={nickname}
 				type="text"
 				onChange={onChangeDisplayName}
 				placeholder="Display Name"
