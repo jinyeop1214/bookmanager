@@ -1,5 +1,6 @@
 import { NextPage } from "next";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 import { User } from "../Interfaces";
 
@@ -9,6 +10,7 @@ interface signupProps {
 }
 
 const signup: NextPage<signupProps> = ({ user, setUser }) => {
+	const router = useRouter();
 	const [id, setId] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const [nickname, setNickname] = useState<string>("");
@@ -49,7 +51,7 @@ const signup: NextPage<signupProps> = ({ user, setUser }) => {
 			password,
 			nickname,
 		};
-		const response = await fetch("/api/user", {
+		const response = await fetch("/api/signup", {
 			method: "post",
 			headers: {
 				"Content-Type": "application/json",
@@ -58,6 +60,9 @@ const signup: NextPage<signupProps> = ({ user, setUser }) => {
 		});
 		const body = await response.json();
 		console.log(body);
+		setUser({ isLoggedIn: true, id, nickname });
+		router.replace(`/`);
+
 		// try {
 		// 	const result = await excuteQuery({
 		// 		query: `INSERT INTO users (id, password, nickname) VALUES(?, ?, ?)`,
@@ -72,7 +77,7 @@ const signup: NextPage<signupProps> = ({ user, setUser }) => {
 	return (
 		<div className="container">
 			<div className="title">
-				{!user.isloggedIn ? (
+				{!user.isLoggedIn ? (
 					// {true ? (
 					<Link href="/">
 						<a className="link">Book Manager</a>
@@ -90,6 +95,7 @@ const signup: NextPage<signupProps> = ({ user, setUser }) => {
 				type="text"
 				onChange={onChangeId}
 				placeholder="ID"
+				autoFocus
 			/>
 			<input
 				className="password"

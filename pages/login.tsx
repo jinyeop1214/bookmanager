@@ -1,8 +1,16 @@
 import { NextPage } from "next";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
+import { User } from "../Interfaces";
 
-const login: NextPage = () => {
+interface loginProps {
+	user: User;
+	setUser: (user: User) => void;
+}
+
+const login: NextPage<loginProps> = ({ user, setUser }) => {
+	const router = useRouter();
 	const [id, setId] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const [wrongText, setWrongText] = useState<string>("");
@@ -27,11 +35,29 @@ const login: NextPage = () => {
 	 * TODO: 로그인 with DB
 	 * @returns
 	 */
-	const handleLogIn = () => {
+	const handleLogIn = async () => {
 		if (id === "" || password === "") {
 			setWrongText("빈칸을 채워주세요.");
 			return;
 		}
+
+		const userQuery = { id, password };
+		const response = await fetch("/api/login", {
+			method: "post",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(userQuery),
+		});
+		const body = await response.json();
+		console.log(body);
+
+		setUser({
+			isLoggedIn: true,
+			id: body.user.id,
+			nickname: body.user.nickname,
+		});
+		router.replace(`/`);
 	};
 
 	return (
@@ -48,6 +74,7 @@ const login: NextPage = () => {
 				type="text"
 				onChange={onChangeId}
 				placeholder="ID"
+				autoFocus
 			/>
 			<input
 				className="password"

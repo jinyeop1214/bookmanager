@@ -1,5 +1,5 @@
 export interface User {
-	isloggedIn: boolean;
+	isLoggedIn: boolean;
 	id?: string;
-	name?: string;
+	nickname?: string;
 }

@@ -1,16 +1,22 @@
 import Link from "next/link";
 import React, { useState } from "react";
+import { User } from "../../Interfaces";
 
-const header = () => {
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
+interface headerProps {
+	user: User;
+	setUser: (user: User) => void;
+}
 
-	const handleLogOut = () => {};
+const header = ({ user, setUser }: headerProps) => {
+	const handleLogOut = () => {
+		setUser({ isLoggedIn: false });
+	};
 
 	return (
-		<div className="Header">
-			<div className="Bar">
-				{isLoggedIn ? (
-					<button className="logoutbtn" onClick={handleLogOut}>
+		<div className="header">
+			<div className="bar">
+				{user.isLoggedIn ? (
+					<button className="btn" onClick={handleLogOut}>
 						log out
 					</button>
 				) : (
@@ -25,7 +31,7 @@ const header = () => {
 					</>
 				)}
 			</div>
-			<div className="Logo">Book Manager</div>
+			<div className="logo">Book Manager</div>
 			<style jsx>
 				{`
 					a {
@@ -38,7 +44,7 @@ const header = () => {
 						letter-spacing: -0.05em;
 					}
 
-					.Logo {
+					.logo {
 						color: midnightblue;
 						margin-top: 10px;
 						text-align: center;
@@ -47,11 +53,11 @@ const header = () => {
 						font-family: "Poppins";
 					}
 
-					.Bar {
+					.bar {
 						display: inline-block;
 					}
 
-					.Header {
+					.header {
 						height: 100px;
 						padding: 20px;
 						padding-left: 30px;
@@ -61,7 +67,7 @@ const header = () => {
 						border-bottom: 2px solid darkblue;
 					}
 
-					.logoutbtn {
+					.btn {
 						background-color: white;
 						text-decoration: none;
 						color: midnightblue;

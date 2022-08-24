@@ -4,17 +4,21 @@ import Seo from "../Components/Seo";
 import Footer from "../Components/Footer/Footer";
 import { useState } from "react";
 import { User } from "../Interfaces";
+import Layout from "../Components/Layout";
 
 function MyApp({ Component, pageProps }: AppProps) {
 	const [user, setUser] = useState<User>({
-		isloggedIn: false,
+		isLoggedIn: false,
 	});
+
+	console.log(user);
 
 	return (
 		<>
-			<Seo />
-			<Component {...pageProps} user={user} setUser={setUser} />
-			{/* <Footer /> */}
+			<Layout>
+				<Component {...pageProps} user={user} setUser={setUser} />
+				{/* <Footer /> */}
+			</Layout>
 		</>
 	);
 }
