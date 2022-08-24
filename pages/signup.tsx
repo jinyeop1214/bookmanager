@@ -4,12 +4,12 @@ import { useRouter } from "next/router";
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 import { User } from "../Interfaces";
 
-interface signupProps {
+interface SignupProps {
 	user: User;
 	setUser: (user: User) => void;
 }
 
-const signup: NextPage<signupProps> = ({ user, setUser }) => {
+const signup: NextPage<SignupProps> = ({ user, setUser }) => {
 	const router = useRouter();
 	const [id, setId] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
@@ -71,7 +71,7 @@ const signup: NextPage<signupProps> = ({ user, setUser }) => {
 		router.replace(`/`);
 
 		// try {
-		// 	const result = await excuteQuery({
+		// 	const result = await executeQuery({
 		// 		query: `INSERT INTO users (id, password, nickname) VALUES(?, ?, ?)`,
 		// 		values: [id, password, nickname],
 		// 	});

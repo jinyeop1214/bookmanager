@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { excuteQuery } from "../../Schema/db";
+import { executeQuery } from "../../schema/Database";
 
 /**
  * @param req
@@ -17,7 +17,7 @@ export default async function userHandler(
 				body: { id, password, nickname },
 			} = req;
 
-			const sameIDResult = await excuteQuery({
+			const sameIDResult = await executeQuery({
 				query: `SELECT id FROM users WHERE id = ?`,
 				values: [id],
 			});
@@ -29,7 +29,7 @@ export default async function userHandler(
 				return resolve();
 			}
 			console.log(456456);
-			const signUpResult = await excuteQuery({
+			const signUpResult = await executeQuery({
 				query: `INSERT INTO users(id, password, nickname) VALUES(?, ?, ?)`,
 				values: [id, password, nickname],
 			});
@@ -42,7 +42,7 @@ export default async function userHandler(
 		}
 	});
 
-	// excuteQuery({
+	// executeQuery({
 	// 	query: `INSERT INTO users (id, password, nickname) VALUES(?, ?, ?)`,
 	// 	values: [id, password, nickname],
 	// })
@@ -55,7 +55,7 @@ export default async function userHandler(
 	// 	});
 
 	// try {
-	// 	const result = await excuteQuery({
+	// 	const result = await executeQuery({
 	// 		query: `INSERT INTO users (id, password, nickname) VALUES(?, ?, ?)`,
 	// 		values: [id, password, nickname],
 	// 	});

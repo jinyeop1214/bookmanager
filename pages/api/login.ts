@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { excuteQuery } from "../../Schema/db";
+import { executeQuery } from "../../schema/Database";
 
 export default async function userHandler(
 	req: NextApiRequest,
@@ -12,7 +12,7 @@ export default async function userHandler(
 				body: { id, password },
 			} = req;
 			console.log(1);
-			const logInResult = await excuteQuery({
+			const logInResult = await executeQuery({
 				query: `SELECT * FROM users WHERE id = ?`,
 				values: [id],
 			});

@@ -1,26 +1,26 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import Seo from "../Components/Seo";
-import Footer from "../Components/Footer/Footer";
 import { useState } from "react";
 import { User } from "../Interfaces";
-import Layout from "../Components/Layout";
+import Layout from "../components/Layout";
+import { wrapper } from "../store";
 
 function MyApp({ Component, pageProps }: AppProps) {
-	const [user, setUser] = useState<User>({
-		isLoggedIn: false,
-	});
+	// const [user, setUser] = useState<User>({
+	// 	isLoggedIn: false,
+	// 	id: null,
+	// 	nickname: null,
+	// });
 
-	console.log(user);
+	// console.log(user);
 
 	return (
 		<>
 			<Layout>
-				<Component {...pageProps} user={user} setUser={setUser} />
-				{/* <Footer /> */}
+				<Component {...pageProps} />
 			</Layout>
 		</>
 	);
 }
 
-export default MyApp;
+export default wrapper.withRedux(MyApp);

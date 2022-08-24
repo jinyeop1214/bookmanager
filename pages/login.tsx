@@ -4,12 +4,12 @@ import { useRouter } from "next/router";
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 import { User } from "../Interfaces";
 
-interface loginProps {
+interface LoginProps {
 	user: User;
 	setUser: (user: User) => void;
 }
 
-const login: NextPage<loginProps> = ({ user, setUser }) => {
+const login: NextPage<LoginProps> = ({ user, setUser }) => {
 	const router = useRouter();
 	const [id, setId] = useState<string>("");
 	const [password, setPassword] = useState<string>("");

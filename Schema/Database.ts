@@ -9,12 +9,12 @@ const db = mysql({
 	},
 });
 
-interface excuteQueryProps {
+interface executeQueryProps {
 	query: string;
 	values: Array<any>;
 }
 
-export const excuteQuery = async ({ query, values }: excuteQueryProps) => {
+export const executeQuery = async ({ query, values }: executeQueryProps) => {
 	try {
 		const result = await db.query(query, values);
 		await db.end();
