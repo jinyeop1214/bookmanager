@@ -38,7 +38,6 @@ const signup: NextPage<signupProps> = ({ user, setUser }) => {
 	};
 
 	/**
-	 * TODO: 회원가입 with DB
 	 * @returns
 	 */
 	const handleSignUp = async () => {
@@ -60,6 +59,14 @@ const signup: NextPage<signupProps> = ({ user, setUser }) => {
 		});
 		const body = await response.json();
 		console.log(body);
+		if (body.error) {
+			switch (body.error) {
+				case "ID":
+					setWrongText("이미 존재하는 ID입니다.");
+					break;
+			}
+			return;
+		}
 		setUser({ isLoggedIn: true, id, nickname });
 		router.replace(`/`);
 

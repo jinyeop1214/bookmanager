@@ -32,7 +32,6 @@ const login: NextPage<loginProps> = ({ user, setUser }) => {
 	};
 
 	/**
-	 * TODO: 로그인 with DB
 	 * @returns
 	 */
 	const handleLogIn = async () => {
@@ -51,6 +50,18 @@ const login: NextPage<loginProps> = ({ user, setUser }) => {
 		});
 		const body = await response.json();
 		console.log(body);
+
+		if (body.error) {
+			switch (body.error) {
+				case "ID":
+					setWrongText("잘못된 ID입니다.");
+					break;
+				case "Password":
+					setWrongText("잘못된 비밀번호입니다.");
+					break;
+			}
+			return;
+		}
 
 		setUser({
 			isLoggedIn: true,
