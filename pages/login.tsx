@@ -2,14 +2,11 @@ import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
-import { User } from "../Interfaces";
+import { useDispatch } from "react-redux";
+import { logIn } from "../store/reducers/user";
 
-interface LoginProps {
-	user: User;
-	setUser: (user: User) => void;
-}
-
-const login: NextPage<LoginProps> = ({ user, setUser }) => {
+const login: NextPage = () => {
+	const dispatch = useDispatch();
 	const router = useRouter();
 	const [id, setId] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
@@ -63,11 +60,13 @@ const login: NextPage<LoginProps> = ({ user, setUser }) => {
 			return;
 		}
 
-		setUser({
-			isLoggedIn: true,
-			id: body.user.id,
-			nickname: body.user.nickname,
-		});
+		dispatch(
+			logIn({
+				id: body.user.id,
+				nickname: body.user.nickname,
+			})
+		);
+
 		router.replace(`/`);
 	};
 

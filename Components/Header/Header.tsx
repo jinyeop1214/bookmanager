@@ -1,15 +1,14 @@
 import Link from "next/link";
 import React from "react";
-import { User } from "../../Interfaces";
+import { useDispatch } from "react-redux";
+import { logOut, selectUser, useAppSelector } from "../../store/reducers/user";
 
-interface headerProps {
-	user: User;
-	setUser: (user: User) => void;
-}
+const header = () => {
+	const dispatch = useDispatch();
+	const user = useAppSelector(selectUser); // const user = useSelector((state: AppState) => state.userSlice);
 
-const header = ({ user, setUser }: headerProps) => {
 	const handleLogOut = () => {
-		setUser({ isLoggedIn: false });
+		dispatch(logOut());
 	};
 
 	return (

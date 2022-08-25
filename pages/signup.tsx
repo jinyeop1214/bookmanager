@@ -2,14 +2,11 @@ import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
-import { User } from "../Interfaces";
+import { useDispatch } from "react-redux";
+import { logIn } from "../store/reducers/user";
 
-interface SignupProps {
-	user: User;
-	setUser: (user: User) => void;
-}
-
-const signup: NextPage<SignupProps> = ({ user, setUser }) => {
+const signup: NextPage = () => {
+	const dispatch = useDispatch();
 	const router = useRouter();
 	const [id, setId] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
@@ -67,33 +64,21 @@ const signup: NextPage<SignupProps> = ({ user, setUser }) => {
 			}
 			return;
 		}
-		setUser({ isLoggedIn: true, id, nickname });
+		dispatch(
+			logIn({
+				id,
+				nickname,
+			})
+		);
 		router.replace(`/`);
-
-		// try {
-		// 	const result = await executeQuery({
-		// 		query: `INSERT INTO users (id, password, nickname) VALUES(?, ?, ?)`,
-		// 		values: [id, password, nickname],
-		// 	});
-		// 	console.log(result);
-		// } catch (error) {
-		// 	console.log(error);
-		// }
 	};
 
 	return (
 		<div className="container">
 			<div className="title">
-				{!user.isLoggedIn ? (
-					// {true ? (
-					<Link href="/">
-						<a className="link">Book Manager</a>
-					</Link>
-				) : (
-					<Link href="/user">
-						<a className="link">Book Manager</a>
-					</Link>
-				)}
+				<Link href="/">
+					<a className="link">Book Manager</a>
+				</Link>
 			</div>
 			<div className="subtitle">Sign up</div>
 			<input
