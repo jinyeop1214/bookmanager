@@ -20,6 +20,7 @@ export const executeQuery = async ({ query, values }: executeQueryProps) => {
 		await db.end();
 		return result;
 	} catch (error) {
+		console.log(error);
 		return { error };
 	}
 };

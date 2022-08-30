@@ -6,6 +6,7 @@ import { User, UserPayload } from "../../Interfaces";
 
 const initialState: User = {
 	isLoggedIn: false,
+	uid: null,
 	id: null,
 	nickname: null,
 };
@@ -16,9 +17,9 @@ export const userSlice = createSlice({
 	reducers: {
 		getData: (state) => state,
 		logIn: (_state, action: PayloadAction<UserPayload>) => {
-			console.log("REDUCER LOGIN");
 			return {
 				isLoggedIn: true,
+				uid: action.payload.uid,
 				id: action.payload.id,
 				nickname: action.payload.nickname,
 			};

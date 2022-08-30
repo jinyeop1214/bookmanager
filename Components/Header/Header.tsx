@@ -1,24 +1,29 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { logOut, selectUser, useAppSelector } from "../../store/reducers/user";
 
 const header = () => {
+	const router = useRouter();
 	const dispatch = useDispatch();
-	const user = useAppSelector(selectUser); // const user = useSelector((state: AppState) => state.userSlice);
+	const { isLoggedIn, id, nickname } = useAppSelector(selectUser); // const user = useSelector((state: AppState) => state.userSlice);
 
 	const handleLogOut = () => {
 		dispatch(logOut());
+		router.replace(`/`);
 	};
 
 	return (
 		<div className="header">
 			<div className="bar">
-				{user.isLoggedIn ? (
-					<button className="btn" onClick={handleLogOut}>
-						log out
-					</button>
-				) : (
+				{/* {user.isLoggedIn ? ( */}
+				<button className="btn">{nickname}</button>
+				<span className="border-line"></span>
+				<button className="btn" onClick={handleLogOut}>
+					log out
+				</button>
+				{/* ) : (
 					<>
 						<Link href="/login">
 							<a>Log In</a>
@@ -28,7 +33,7 @@ const header = () => {
 							<a>Sign Up</a>
 						</Link>
 					</>
-				)}
+				)} */}
 			</div>
 			<div className="logo">Book Manager</div>
 			<style jsx>
@@ -38,7 +43,7 @@ const header = () => {
 						color: midnightblue;
 						font-size: 17px;
 						font-weight: bold;
-						font-family: "Poppins";
+						font-family: inherit;
 						line-height: 1.75em;
 						letter-spacing: -0.05em;
 					}
@@ -49,7 +54,7 @@ const header = () => {
 						text-align: center;
 						font-size: 32px;
 						font-weight: bold;
-						font-family: "Poppins";
+						font-family: inherit;
 					}
 
 					.bar {
@@ -67,17 +72,23 @@ const header = () => {
 					}
 
 					.btn {
+						display: inline-block;
 						background-color: white;
 						text-decoration: none;
 						color: midnightblue;
 						font-size: 16.5px;
 						font-weight: bold;
-						font-family: "Poppins";
+						font-family: inherit;
 						padding: 0px;
 						line-height: 1.75em;
 						border: none;
 						letter-spacing: -0.05em;
 						cursor: pointer;
+					}
+
+					.border-line {
+						border-right: 1px solid #dadde1;
+						margin: 13px;
 					}
 				`}
 			</style>
