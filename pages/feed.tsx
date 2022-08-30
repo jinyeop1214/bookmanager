@@ -12,12 +12,11 @@ interface FeedProps {
 }
 
 /**
- * 내가 등록한 책: {books.length} -> 현재는 전체 책 갯수. 자기 책 갯수로 바꿔야함. ssr에서 필터해서 갯수만 주자. 자기거필터는 map 함수에서 렌더링 안되게 거르기.을 ssr에서못하는구나
  * @param param0
  * @returns
  */
-const Feed: NextPage<FeedProps> = ({ books }) => {
-	const { isLoggedIn, uid, id, nickname } = useAppSelector(selectUser); // const user = useSelector((state: AppState) => state.userSlice);
+const Home: NextPage<FeedProps> = ({ books }) => {
+	const { isLoggedIn, uid, id, nickname } = useAppSelector(selectUser);
 	const router = useRouter();
 	const myBooks = books.filter((book) => book.user_id === uid);
 
@@ -84,7 +83,7 @@ const Feed: NextPage<FeedProps> = ({ books }) => {
 	);
 };
 
-export default Feed;
+export default Home;
 
 export const getServerSideProps: GetServerSideProps = async (_context) => {
 	const response = await fetch("http://localhost:3000/api/books", {

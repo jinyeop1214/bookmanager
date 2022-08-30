@@ -9,7 +9,6 @@ const appReducer = combineReducers({
 });
 
 /**
- * Next에서는 getServerSideProps가 있는 page가 매 렌더링 될때마다 HYDRATE action이 dispatched되는데, client side와 동기화시키기 위해 이전 상태로 덮어줘야 한다.
  * @param state
  * @param action
  * @returns

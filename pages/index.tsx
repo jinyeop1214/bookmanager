@@ -1,6 +1,3 @@
-/**
- * 새 계정 만들기 버튼 온클릭 핸들러 추가해야함. 페이지 이름 바꿔야함 이게 메인, 로그인되면 된걸로 ssr
- */
 import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -8,7 +5,7 @@ import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { logIn } from "../store/reducers/user";
 
-const Home: NextPage = () => {
+const Sign: NextPage = () => {
 	const dispatch = useDispatch();
 	const router = useRouter();
 	const [id, setId] = useState("");
@@ -283,4 +280,4 @@ const Home: NextPage = () => {
 	);
 };
 
-export default Home;
+export default Sign;

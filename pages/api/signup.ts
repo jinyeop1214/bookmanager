@@ -2,7 +2,6 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { executeQuery } from "../../schema/Database";
 
 /**
- * //다시 쿼리해서 user_id 리턴해야함.
  * @param req
  * @param res
  * @returns
@@ -24,15 +23,29 @@ export default async function userHandler(
 			});
 			const sameID = JSON.parse(JSON.stringify(sameIDResult));
 			if (sameID.length !== 0) {
-				res.status(200).json({ success: false, error: "ID" });
+				res.status(200).json({ user: null, error: "ID" });
 				return resolve();
 			}
-			const signUpResult = await executeQuery({
+
+			await executeQuery({
 				query: `INSERT INTO users(id, password, nickname) VALUES(?, ?, ?)`,
 				values: [id, password, nickname],
 			});
 
-			res.status(200).json({ success: "true", error: null });
+			const userResult = await executeQuery({
+				query: `SELECT id FROM users WHERE id = ? password = ?`,
+				values: [id, password],
+			});
+
+			const user = JSON.parse(JSON.stringify(userResult));
+			res.status(200).json({
+				user: {
+					user_id: user[0].user_id,
+					id: user[0].id,
+					nickname: user[0].nickname,
+				},
+				error: null,
+			});
 			return resolve();
 		} catch (error) {
 			console.log(error);

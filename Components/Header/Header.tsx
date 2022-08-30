@@ -7,7 +7,7 @@ import { logOut, selectUser, useAppSelector } from "../../store/reducers/user";
 const header = () => {
 	const router = useRouter();
 	const dispatch = useDispatch();
-	const { isLoggedIn, id, nickname } = useAppSelector(selectUser); // const user = useSelector((state: AppState) => state.userSlice);
+	const { isLoggedIn, id, nickname } = useAppSelector(selectUser);
 
 	const handleLogOut = () => {
 		dispatch(logOut());
