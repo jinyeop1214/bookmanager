@@ -18,6 +18,7 @@ interface FeedProps {
  */
 const Home: NextPage<FeedProps> = ({ books }) => {
 	const { isLoggedIn, uid, id, nickname } = useAppSelector(selectUser);
+	console.log("!!!!!!", isLoggedIn, uid, id, nickname);
 	const router = useRouter();
 	const myBooks = books.filter((book) => book.user_id === uid);
 
@@ -35,11 +36,13 @@ const Home: NextPage<FeedProps> = ({ books }) => {
 					</span>
 				</div>
 				{isLoggedIn && <AddBookBox />}
-				<div className="books">
-					{books.map((book, _index) => (
-						<BookBox key={book.book_id} book={book} />
-					))}
-				</div>
+				{isLoggedIn && (
+					<div className="books">
+						{books.map((book, _index) => (
+							<BookBox key={book.book_id} book={book} />
+						))}
+					</div>
+				)}
 			</div>
 			<style jsx>{`
 				.body {

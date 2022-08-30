@@ -1,19 +1,33 @@
+import { useRouter } from "next/router";
 import React, { ChangeEvent, useState } from "react";
+import { selectUser, useAppSelector } from "../store/reducers/user";
 
+/**
+ * start 날짜 고르면 end는 그 이후. 그 전으로는 disable하면 좋다.
+ * @returns
+ */
 const AddBookBox = () => {
+	const { uid, isLoggedIn, id, nickname } = useAppSelector(selectUser);
 	const [bookname, setBookname] = useState<string>("");
-	const [period, setPeriod] = useState<string>("");
+	const [start, setStart] = useState<string>("");
+	const [end, setEnd] = useState<string>("");
 	const [theme, setTheme] = useState<string>("");
 	const [review, setReview] = useState<string>("");
 	const [wrongtext, setWrongText] = useState<string>("");
+	const router = useRouter();
 
 	const onChangeBookname = (e: ChangeEvent<HTMLInputElement>) => {
 		setBookname(e.target.value);
 		setWrongText("");
 	};
 
-	const onChangePeriod = (e: ChangeEvent<HTMLInputElement>) => {
-		setPeriod(e.target.value);
+	const onChangeStart = (e: ChangeEvent<HTMLInputElement>) => {
+		setStart(e.target.value);
+		setWrongText("");
+	};
+
+	const onChangeEnd = (e: ChangeEvent<HTMLInputElement>) => {
+		setEnd(e.target.value);
 		setWrongText("");
 	};
 
@@ -27,28 +41,43 @@ const AddBookBox = () => {
 		setWrongText("");
 	};
 
-	const handleAddBook = (
-		bookname: string,
-		period: string,
-		theme: string,
-		review: string
-	) => {
-		if (bookname === "" || period === "" || theme === "" || review === "") {
-			setWrongText("Please fill all blanks.");
+	const handleAddBook = async () => {
+		if (
+			bookname === "" ||
+			start === "" ||
+			end === "" ||
+			theme === "" ||
+			review === ""
+		) {
+			setWrongText("빈칸을 채워주세요.");
 			return;
 		}
-		// createBook({
-		//     variables: {
-		//         bookname: bookname,
-		//         period: period,
-		//         theme: theme,
-		//         review: review,
-		//         userId: user.id
-		//     },
-		// }).then(() => {
-		//     if(error) console.log(error);
-		//     else window.location.reload();
-		// })
+
+		const book = {
+			bookname,
+			start,
+			end,
+			theme,
+			review,
+			user_id: uid,
+		};
+
+		const response = await fetch("/api/addBook", {
+			method: "post",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(book),
+		});
+		// const body = await response.json();
+		setBookname("");
+		setStart("");
+		setEnd("");
+		setTheme("");
+		setReview("");
+		router.replace("/feed");
+
+		//
 	};
 
 	return (
@@ -64,19 +93,21 @@ const AddBookBox = () => {
 					/>
 					<input
 						className="period"
-						value={period}
+						value={start}
 						type="date"
-						onChange={onChangePeriod}
-						placeholder="독서 기간"
+						onChange={onChangeStart}
 					/>
 					<input
 						className="period"
-						value={period}
+						value={end}
 						type="date"
-						onChange={onChangePeriod}
-						placeholder="독서 기간"
+						onChange={onChangeEnd}
 					/>
-					<select className="theme" onChange={onChangeTheme}>
+					<select
+						className="theme"
+						value={theme}
+						onChange={onChangeTheme}
+					>
 						<option value="">theme</option>
 						<option value="문학">문학</option>
 						<option value="철학">철학</option>
@@ -101,14 +132,8 @@ const AddBookBox = () => {
 				</div>
 			</div>
 			<div className="btn-container">
-				{/* <div> */}
 				<div></div>
-				<button
-					className="btn"
-					onClick={() =>
-						handleAddBook(bookname, period, theme, review)
-					}
-				>
+				<button className="btn" onClick={handleAddBook}>
 					등록하기
 				</button>
 			</div>
