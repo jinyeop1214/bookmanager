@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { executeQuery } from "../../schema/Database";
 
 /**
+ * //다시 쿼리해서 user_id 리턴해야함.
  * @param req
  * @param res
  * @returns
@@ -22,18 +23,15 @@ export default async function userHandler(
 				values: [id],
 			});
 			const sameID = JSON.parse(JSON.stringify(sameIDResult));
-			console.log(sameID);
 			if (sameID.length !== 0) {
-				console.log(123123);
 				res.status(200).json({ success: false, error: "ID" });
 				return resolve();
 			}
-			console.log(456456);
 			const signUpResult = await executeQuery({
 				query: `INSERT INTO users(id, password, nickname) VALUES(?, ?, ?)`,
 				values: [id, password, nickname],
 			});
-			console.log(signUpResult);
+
 			res.status(200).json({ success: "true", error: null });
 			return resolve();
 		} catch (error) {
@@ -41,26 +39,4 @@ export default async function userHandler(
 			return reject();
 		}
 	});
-
-	// executeQuery({
-	// 	query: `INSERT INTO users (id, password, nickname) VALUES(?, ?, ?)`,
-	// 	values: [id, password, nickname],
-	// })
-	// 	.then((result) => {
-	// 		console.log(result);
-	// 		res.status(200).json({ success: "true" });
-	// 	})
-	// 	.catch((Error) => {
-	// 		console.log(Error);
-	// 	});
-
-	// try {
-	// 	const result = await executeQuery({
-	// 		query: `INSERT INTO users (id, password, nickname) VALUES(?, ?, ?)`,
-	// 		values: [id, password, nickname],
-	// 	});
-	// 	console.log(result);
-	// } catch (error) {
-	// 	console.log(error);
-	// }
 }

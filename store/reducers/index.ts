@@ -19,8 +19,6 @@ const reducer = (
 	action: AnyAction
 ) => {
 	if (action.type === HYDRATE) {
-		console.log("HYDRATE");
-		console.log({ state, action });
 		const nextState = {
 			...action.payload,
 			...state,

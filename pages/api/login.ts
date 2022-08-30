@@ -11,13 +11,10 @@ export default async function userHandler(
 				method,
 				body: { id, password },
 			} = req;
-			console.log(1);
 			const logInResult = await executeQuery({
 				query: `SELECT * FROM users WHERE id = ?`,
 				values: [id],
 			});
-			console.log(2);
-			console.log(logInResult);
 			const user = JSON.parse(JSON.stringify(logInResult));
 			if (user.length === 0) {
 				console.log("No ID");
@@ -29,7 +26,6 @@ export default async function userHandler(
 				res.status(200).json({ user: null, error: "Password" });
 				return resolve();
 			}
-			console.log("Login Success");
 			const loggedInUser = {
 				user_id: user[0].user_id,
 				id: user[0].id,
