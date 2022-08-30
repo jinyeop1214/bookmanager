@@ -22,6 +22,7 @@ const AddBookBox = () => {
 	};
 
 	const onChangeStart = (e: ChangeEvent<HTMLInputElement>) => {
+		if (end !== "" && e.target.value > end) setEnd("");
 		setStart(e.target.value);
 		setWrongText("");
 	};
@@ -96,12 +97,21 @@ const AddBookBox = () => {
 						value={start}
 						type="date"
 						onChange={onChangeStart}
+						// max={new Date().toISOString().split("T")[0]}
+						max={
+							new Date(
+								new Date().setDate(new Date().getDate() + 1)
+							)
+								.toISOString()
+								.split("T")[0]
+						}
 					/>
 					<input
 						className="period"
 						value={end}
 						type="date"
 						onChange={onChangeEnd}
+						min={start === "" ? undefined : start}
 					/>
 					<select
 						className="theme"
