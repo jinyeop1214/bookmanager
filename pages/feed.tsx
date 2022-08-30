@@ -1,6 +1,7 @@
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import AddBookBox from "../components/AddBookBox";
 import BookBox from "../components/BookBox";
 import Header from "../components/header/Header";
 import { Book, User } from "../Interfaces";
@@ -33,7 +34,7 @@ const Home: NextPage<FeedProps> = ({ books }) => {
 						내가 등록한 책: {myBooks.length}권
 					</span>
 				</div>
-				{/* {isLoggedIn && <AddBookBox />} */}
+				{isLoggedIn && <AddBookBox />}
 				<div className="books">
 					{books.map((book, _index) => (
 						<BookBox key={book.book_id} book={book} />

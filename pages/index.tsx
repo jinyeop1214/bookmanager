@@ -240,7 +240,7 @@ const Sign: NextPage = () => {
 					font-size: 20px;
 					margin: 10px 10px 0px 10px;
 					width: 94%;
-					opacity: 0.95;
+					opacity: 0.9;
 					padding: 8px;
 					border: none;
 					cursor: pointer;
@@ -261,7 +261,7 @@ const Sign: NextPage = () => {
 					color: white;
 					background-color: #42b72a;
 					font-size: 17px;
-					opacity: 0.95;
+					opacity: 0.9;
 					padding: 8px;
 					border: none;
 					cursor: pointer;
