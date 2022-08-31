@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React from "react";
 import { DateFormat } from "../functions/DateFormat";
 import { Book } from "../Interfaces";
@@ -9,11 +10,26 @@ interface OpenedBoxProps {
 }
 
 const OpenedBox = (props: OpenedBoxProps) => {
+	const router = useRouter();
 	const { book_id, bookname, start, end, theme, review, user_id } =
 		props.book;
 	const toggleOpen = props.toggleOpen;
 	const toggleUpdate = props.toggleUpdate;
 	const { from, to } = DateFormat(start, end);
+
+	const handleDeleteBook = async () => {
+		const ok = confirm("정말로 삭제하나요?");
+		if (ok) {
+			try {
+				const response = await fetch(`/api/book/${book_id}`, {
+					method: "delete",
+				});
+			} catch (error) {
+				console.log(error);
+			}
+		}
+		router.replace(`/feed`);
+	};
 
 	return (
 		<div className="box">
@@ -40,7 +56,7 @@ const OpenedBox = (props: OpenedBoxProps) => {
 				<button className="update-btn" onClick={toggleUpdate}>
 					수정
 				</button>
-				<button className="delete-btn" onClick={undefined}>
+				<button className="delete-btn" onClick={handleDeleteBook}>
 					삭제
 				</button>
 				<button className="close-btn" onClick={toggleOpen}>
