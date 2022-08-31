@@ -1,4 +1,3 @@
-import { resolveSoa } from "dns";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { executeQuery } from "../../schema/Database";
 

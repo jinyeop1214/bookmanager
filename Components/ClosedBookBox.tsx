@@ -15,28 +15,28 @@ const ClosedBookBox = (props: ClosedBookBoxProps) => {
 		props.book;
 	const toggleOpen = props.toggleOpen;
 	const { from, to } = DateFormat(start, end);
-	console.log(from, to);
 
 	return (
 		<div className="box">
 			<div className="bookname">
-				<span className="info">Name: </span>
+				<span className="info">제목: </span>
 				<span className="data">{bookname}</span>
 			</div>
 			<div className="period">
-				<span className="info">Period: </span>
-				<span className="data">
-					{from} ~ {to}
-				</span>
+				<div className="info">기간: </div>
+				<div className="data">
+					{from}
+					<br />~ {to}
+				</div>
 			</div>
 			<div className="theme">
-				<span className="info">Theme: </span>
+				<span className="info">분야: </span>
 				<span className="data">{theme}</span>
 			</div>
 			<div className="open-button-wrapper">
 				<span></span>
 				<button className="open-button" onClick={toggleOpen}>
-					Open
+					펼치기
 				</button>
 			</div>
 			<style jsx>{`
@@ -56,6 +56,9 @@ const ClosedBookBox = (props: ClosedBookBoxProps) => {
 				}
 
 				.bookname {
+					display: grid;
+					grid-auto-flow: column;
+					grid-template-columns: 1fr 6fr;
 					font-family: inherit;
 					line-height: 1.75em;
 					letter-spacing: -0.05em;
@@ -65,6 +68,9 @@ const ClosedBookBox = (props: ClosedBookBoxProps) => {
 				}
 
 				.period {
+					display: grid;
+					grid-auto-flow: column;
+					grid-template-columns: 1fr 6fr;
 					font-family: inherit;
 					line-height: 1.75em;
 					letter-spacing: -0.05em;
@@ -73,6 +79,9 @@ const ClosedBookBox = (props: ClosedBookBoxProps) => {
 				}
 
 				.theme {
+					display: grid;
+					grid-auto-flow: column;
+					grid-template-columns: 1fr 6fr;
 					font-family: inherit;
 					line-height: 1.75em;
 					letter-spacing: -0.05em;

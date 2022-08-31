@@ -1,4 +1,5 @@
 import React from "react";
+import { DateFormat } from "../functions/DateFormat";
 import { Book } from "../Interfaces";
 
 interface OpenedBoxProps {
@@ -12,31 +13,27 @@ const OpenedBox = (props: OpenedBoxProps) => {
 		props.book;
 	const toggleOpen = props.toggleOpen;
 	const toggleUpdate = props.toggleUpdate;
+	const { from, to } = DateFormat(start, end);
 
 	return (
 		<div className="box">
 			<div className="bookname">
-				<span className="info">Name: </span>
+				<span className="info">제목: </span>
 				<span className="data">{bookname}</span>
 			</div>
 			<div className="period">
-				<span className="info">Start: </span>
-				<span className="data">{start}</span>
-			</div>
-			<div className="period">
-				<span className="info">End: </span>
-				<span className="data">{end}</span>
+				<div className="info">기간: </div>
+				<div className="data">
+					{from}
+					<br />~ {to}
+				</div>
 			</div>
 			<div className="theme">
-				<span className="info">Theme: </span>
+				<span className="info">분야: </span>
 				<span className="data">{theme}</span>
 			</div>
 			<div className="review">
-				<div className="info">Review: </div>
-				<div className="data">
-					<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-					<span>{review}</span>
-				</div>
+				<div className="data">&nbsp;{review}</div>
 			</div>
 			<div className="btn-wrapper">
 				<span></span>
@@ -47,7 +44,7 @@ const OpenedBox = (props: OpenedBoxProps) => {
 					삭제
 				</button>
 				<button className="close-btn" onClick={toggleOpen}>
-					닫기
+					접기
 				</button>
 			</div>
 			<style jsx>
@@ -68,6 +65,9 @@ const OpenedBox = (props: OpenedBoxProps) => {
 					}
 
 					.bookname {
+						display: grid;
+						grid-auto-flow: column;
+						grid-template-columns: 1fr 6fr;
 						font-family: inherit;
 						line-height: 1.75em;
 						letter-spacing: -0.05em;
@@ -77,6 +77,9 @@ const OpenedBox = (props: OpenedBoxProps) => {
 					}
 
 					.period {
+						display: grid;
+						grid-auto-flow: column;
+						grid-template-columns: 1fr 6fr;
 						font-family: inherit;
 						line-height: 1.75em;
 						letter-spacing: -0.05em;
@@ -85,6 +88,9 @@ const OpenedBox = (props: OpenedBoxProps) => {
 					}
 
 					.theme {
+						display: grid;
+						grid-auto-flow: column;
+						grid-template-columns: 1fr 6fr;
 						font-family: inherit;
 						line-height: 1.75em;
 						letter-spacing: -0.05em;

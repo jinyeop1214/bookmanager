@@ -97,7 +97,6 @@ const AddBookBox = () => {
 						value={start}
 						type="date"
 						onChange={onChangeStart}
-						// max={new Date().toISOString().split("T")[0]}
 						max={
 							new Date(
 								new Date().setDate(new Date().getDate() + 1)

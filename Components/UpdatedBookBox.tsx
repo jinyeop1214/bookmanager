@@ -106,10 +106,10 @@ const UpdatedBox = (props: UpdatedBoxProps) => {
 			<div className="btn-wrapper">
 				<span></span>
 				<button className="done-btn" onClick={undefined}>
-					Done
+					완료
 				</button>
 				<button className="cancel-btn" onClick={toggleUpdate}>
-					Cancel
+					취소
 				</button>
 			</div>
 			<style jsx>{`
