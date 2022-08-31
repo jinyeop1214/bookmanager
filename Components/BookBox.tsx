@@ -10,7 +10,6 @@ interface BookBoxProps {
 
 const BookBox = ({ book }: BookBoxProps) => {
 	const { book_id, bookname, start, end, theme, review, user_id } = book;
-
 	const [open, setOpen] = useState<Boolean>(false);
 	const [update, setUpdate] = useState<Boolean>(false);
 	const [newBook, setNewBook] = useState<Book>({
@@ -25,7 +24,6 @@ const BookBox = ({ book }: BookBoxProps) => {
 
 	const toggleOpen = () => setOpen((prev) => !prev);
 	const toggleUpdate = () => setUpdate((prev) => !prev);
-	const updateNewBook = (book: Book) => setNewBook(book);
 
 	return !open ? ( //not open
 		<ClosedBookBox book={newBook} toggleOpen={toggleOpen} />
@@ -40,7 +38,7 @@ const BookBox = ({ book }: BookBoxProps) => {
 		<UpdatedBox
 			book={newBook}
 			toggleUpdate={toggleUpdate}
-			updateNewBook={updateNewBook}
+			handleSetNewBook={setNewBook}
 		/>
 	);
 };

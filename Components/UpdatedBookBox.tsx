@@ -4,18 +4,18 @@ import { Book } from "../Interfaces";
 interface UpdatedBoxProps {
 	book: Book;
 	toggleUpdate: () => void;
-	updateNewBook: (book: Book) => void;
+	handleSetNewBook: (book: Book) => void;
 }
 
 const UpdatedBox = (props: UpdatedBoxProps) => {
 	const { book_id, bookname, start, end, theme, review, user_id } =
 		props.book;
 	const toggleUpdate = props.toggleUpdate;
-	const updateNewBook = props.updateNewBook;
+	const handleSetNewBook = props.handleSetNewBook;
 
 	const [newBookname, setNewBookname] = useState(bookname);
-	const [newStart, setNewStart] = useState(start);
-	const [newEnd, setNewEnd] = useState(end);
+	const [newStart, setNewStart] = useState(start.split("T")[0]);
+	const [newEnd, setNewEnd] = useState(end.split("T")[0]);
 	const [newTheme, setNewTheme] = useState(theme);
 	const [newReview, setNewReview] = useState(review);
 	const [wrongtext, setWrongText] = useState("");
@@ -26,6 +26,7 @@ const UpdatedBox = (props: UpdatedBoxProps) => {
 	};
 
 	const onChangeStart = (e: ChangeEvent<HTMLInputElement>) => {
+		if (newEnd !== "" && e.target.value > newEnd) setNewEnd("");
 		setNewStart(e.target.value);
 		setWrongText("");
 	};
@@ -45,67 +46,88 @@ const UpdatedBox = (props: UpdatedBoxProps) => {
 		setWrongText("");
 	};
 
+	const handleUpdateBook = async () => {
+		try {
+			if (
+				newBookname === "" ||
+				newStart === "" ||
+				newEnd === "" ||
+				newTheme === "" ||
+				newReview === ""
+			) {
+				setWrongText("빈칸을 모두 채워주세요.");
+				return;
+			}
+
+			const book: Omit<Book, "book_id" | "user_id"> = {
+				bookname: newBookname,
+				start: newStart,
+				end: newEnd,
+				theme: newTheme,
+				review: newReview,
+			};
+
+			await fetch(`/api/book/${book_id}`, {
+				method: "put",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(book),
+			});
+			toggleUpdate();
+			handleSetNewBook({ ...props.book, ...book });
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
 		<div className="box">
-			<div className="bookname">
-				<span className="info">Name: </span>
-				<input
-					className="data"
-					value={newBookname}
-					type="text"
-					onChange={onChangeBookname}
-				/>
-			</div>
-			<div className="period">
-				<span className="info">Start: </span>
-				<input
-					className="data"
-					value={newStart}
-					type="text"
-					onChange={onChangeStart}
-				/>
-			</div>
-			<div className="period">
-				<span className="info">End: </span>
-				<input
-					className="data"
-					value={newEnd}
-					type="text"
-					onChange={onChangeEnd}
-				/>
-			</div>
-			<div className="theme">
-				<span className="info">Theme: </span>
-				<select
-					className="theme-data"
-					value={newTheme}
-					onChange={onChangeTheme}
-				>
-					<option value="">theme</option>
-					<option value="문학">문학</option>
-					<option value="철학">철학</option>
-					<option value="소설">소설</option>
-					<option value="학문">학문</option>
-					<option value="계발">계발</option>
-					<option value="역사">역사</option>
-					<option value="예술">예술</option>
-					<option value="기타">기타</option>
-				</select>
-			</div>
-			<div className="review">
-				<div>Review: </div>
-				<textarea
-					className="review-data"
-					value={newReview}
-					cols={32}
-					rows={8}
-					onChange={onChangeReview}
-				/>
-			</div>
+			<input
+				className="bookname"
+				value={newBookname}
+				type="text"
+				onChange={onChangeBookname}
+			/>
+			<input
+				className="period"
+				value={newStart}
+				type="date"
+				onChange={onChangeStart}
+				max={
+					new Date(new Date().setDate(new Date().getDate() + 1))
+						.toISOString()
+						.split("T")[0]
+				}
+			/>
+			<input
+				className="period"
+				value={newEnd}
+				type="date"
+				onChange={onChangeEnd}
+				min={newStart === "" ? undefined : newStart}
+			/>
+			<select className="theme" value={newTheme} onChange={onChangeTheme}>
+				<option value="문학">문학</option>
+				<option value="철학">철학</option>
+				<option value="소설">소설</option>
+				<option value="학문">학문</option>
+				<option value="계발">계발</option>
+				<option value="역사">역사</option>
+				<option value="예술">예술</option>
+				<option value="기타">기타</option>
+			</select>
+			<textarea
+				className="review"
+				value={newReview}
+				cols={32}
+				rows={8}
+				onChange={onChangeReview}
+			/>
 			<div className="warning">{wrongtext}</div>
 			<div className="btn-wrapper">
 				<span></span>
-				<button className="done-btn" onClick={undefined}>
+				<button className="done-btn" onClick={handleUpdateBook}>
 					완료
 				</button>
 				<button className="cancel-btn" onClick={toggleUpdate}>
@@ -129,51 +151,39 @@ const UpdatedBox = (props: UpdatedBoxProps) => {
 				}
 
 				.bookname {
+					display: block;
+					width: 80%;
+					/* margin: 0px; */
+					/* margin-right: 0px; */
+					font-size: 15px;
+					padding: 8px;
+					margin-bottom: 7px;
+					box-sizing: border-box;
+					border: 2px solid #c4c4c4;
+					border-radius: 10px;
 					font-family: inherit;
-					line-height: 1.75em;
-					letter-spacing: -0.05em;
-					margin-top: 5px;
-					margin-bottom: 5px;
-					width: 258px;
+					/* line-height: 1.75em; */
+					letter-spacing: -0.02em;
 				}
 
 				.period {
+					display: block;
+					width: 80%;
+					/* margin: 0px; */
+					/* margin-right: 0px; */
+					font-size: 15px;
+					padding: 8px;
+					margin-bottom: 7px;
+					box-sizing: border-box;
+					border: 2px solid #c4c4c4;
+					border-radius: 10px;
 					font-family: inherit;
-					line-height: 1.75em;
-					letter-spacing: -0.05em;
-					margin-bottom: 5px;
-					width: 258px;
+					/* line-height: 1.75em; */
+					letter-spacing: -0.02em;
 				}
 
 				.theme {
-					font-family: inherit;
-					line-height: 1.75em;
-					letter-spacing: -0.05em;
-					margin-bottom: 5px;
-					width: 258px;
-				}
-
-				.review {
-					font-family: inherit;
-					line-height: 1.75em;
-					letter-spacing: -0.05em;
-					width: 258px;
-				}
-
-				.data {
-					font-size: 18px;
-				}
-
-				.info {
-					opacity: 0.8;
-				}
-
-				.warning {
-					color: red;
-				}
-
-				.theme-data {
-					width: 35.4%;
+					display: block;
 					font-size: 15px;
 					padding: 5px;
 					margin-bottom: 7px;
@@ -185,7 +195,12 @@ const UpdatedBox = (props: UpdatedBoxProps) => {
 					letter-spacing: -0.02em;
 				}
 
-				.review-data {
+				.warning {
+					color: red;
+				}
+
+				.review {
+					display: block;
 					resize: none;
 					font-size: 15px;
 					margin-right: 15px;

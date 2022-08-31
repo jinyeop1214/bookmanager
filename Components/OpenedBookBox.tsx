@@ -21,7 +21,7 @@ const OpenedBox = (props: OpenedBoxProps) => {
 		const ok = confirm("정말로 삭제하나요?");
 		if (ok) {
 			try {
-				const response = await fetch(`/api/book/${book_id}`, {
+				await fetch(`/api/book/${book_id}`, {
 					method: "delete",
 				});
 			} catch (error) {

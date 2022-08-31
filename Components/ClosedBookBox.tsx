@@ -19,18 +19,15 @@ const ClosedBookBox = (props: ClosedBookBoxProps) => {
 	return (
 		<div className="box">
 			<div className="bookname">
-				<span className="info">제목: </span>
 				<span className="data">{bookname}</span>
 			</div>
 			<div className="period">
-				<div className="info">기간: </div>
 				<div className="data">
 					{from}
 					<br />~ {to}
 				</div>
 			</div>
 			<div className="theme">
-				<span className="info">분야: </span>
 				<span className="data">{theme}</span>
 			</div>
 			<div className="open-button-wrapper">
@@ -56,9 +53,6 @@ const ClosedBookBox = (props: ClosedBookBoxProps) => {
 				}
 
 				.bookname {
-					display: grid;
-					grid-auto-flow: column;
-					grid-template-columns: 1fr 6fr;
 					font-family: inherit;
 					line-height: 1.75em;
 					letter-spacing: -0.05em;
@@ -68,9 +62,6 @@ const ClosedBookBox = (props: ClosedBookBoxProps) => {
 				}
 
 				.period {
-					display: grid;
-					grid-auto-flow: column;
-					grid-template-columns: 1fr 6fr;
 					font-family: inherit;
 					line-height: 1.75em;
 					letter-spacing: -0.05em;
@@ -79,9 +70,6 @@ const ClosedBookBox = (props: ClosedBookBoxProps) => {
 				}
 
 				.theme {
-					display: grid;
-					grid-auto-flow: column;
-					grid-template-columns: 1fr 6fr;
 					font-family: inherit;
 					line-height: 1.75em;
 					letter-spacing: -0.05em;

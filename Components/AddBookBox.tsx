@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import React, { ChangeEvent, useState } from "react";
+import { Book } from "../Interfaces";
 import { selectUser, useAppSelector } from "../store/reducers/user";
 
 /**
@@ -50,17 +51,17 @@ const AddBookBox = () => {
 			theme === "" ||
 			review === ""
 		) {
-			setWrongText("빈칸을 채워주세요.");
+			setWrongText("빈칸을 모두 채워주세요.");
 			return;
 		}
 
-		const book = {
+		const book: Omit<Book, "book_id"> = {
 			bookname,
 			start,
 			end,
 			theme,
 			review,
-			user_id: uid,
+			user_id: uid as number,
 		};
 
 		const response = await fetch("/api/addBook", {
@@ -110,6 +111,13 @@ const AddBookBox = () => {
 						value={end}
 						type="date"
 						onChange={onChangeEnd}
+						max={
+							new Date(
+								new Date().setDate(new Date().getDate() + 1)
+							)
+								.toISOString()
+								.split("T")[0]
+						}
 						min={start === "" ? undefined : start}
 					/>
 					<select
@@ -129,16 +137,14 @@ const AddBookBox = () => {
 					</select>
 					<div className="warning">{wrongtext}</div>
 				</div>
-				<div>
-					<textarea
-						className="review"
-						value={review}
-						cols={50}
-						rows={7}
-						onChange={onChangeReview}
-						placeholder="생각을 자유롭게 남겨주세요!"
-					/>
-				</div>
+				<textarea
+					className="review"
+					value={review}
+					cols={50}
+					rows={7}
+					onChange={onChangeReview}
+					placeholder="생각을 자유롭게 남겨주세요!"
+				/>
 			</div>
 			<div className="btn-container">
 				<div></div>
