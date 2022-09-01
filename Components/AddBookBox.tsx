@@ -86,6 +86,7 @@ const AddBookBox = () => {
 		<div className="container">
 			<div className="new-book-data">
 				<div>
+					<div>제목</div>
 					<input
 						className="bookname"
 						value={bookname}
@@ -93,6 +94,7 @@ const AddBookBox = () => {
 						onChange={onChangeBookname}
 						placeholder="책 제목"
 					/>
+					<div>읽기 시작한 날짜</div>
 					<input
 						className="period"
 						value={start}
@@ -106,6 +108,7 @@ const AddBookBox = () => {
 								.split("T")[0]
 						}
 					/>
+					<div>다 읽은 날짜</div>
 					<input
 						className="period"
 						value={end}
@@ -120,6 +123,7 @@ const AddBookBox = () => {
 						}
 						min={start === "" ? undefined : start}
 					/>
+					<div>분야</div>
 					<select
 						className="theme"
 						value={theme}
@@ -154,13 +158,8 @@ const AddBookBox = () => {
 			</div>
 			<style jsx>{`
 				.container {
-					/* margin-top: 10px;
-    width: auto;
-    padding: 0 16px; */
-					margin: 30px 45px;
-					width: auto;
-					height: 200px;
-					padding: 15px 30px;
+					margin: 20px 25px;
+					padding: 20px 15px;
 					background-color: white;
 					box-sizing: border-box;
 					background: #fff;
@@ -169,24 +168,24 @@ const AddBookBox = () => {
 					border: 1px solid rgb(221, 221, 221);
 					display: grid;
 					grid-auto-flow: column;
-					grid-template-columns: 9fr 1fr;
+					grid-template-columns: 12fr 1fr;
 				}
 
 				.btn-container {
 					display: grid;
 					grid-auto-flow: row;
-					grid-template-rows: 6fr 4fr;
+					grid-template-rows: 7fr 1fr;
 				}
 
 				.new-book-data {
 					display: grid;
 					grid-auto-flow: column;
-					grid-template-columns: 1fr 1.5fr;
+					grid-template-columns: 1fr 2fr;
 				}
 
 				.bookname {
 					display: block;
-					width: 80%;
+					width: 90%;
 					/* margin: 0px; */
 					/* margin-right: 0px; */
 					font-size: 15px;
@@ -202,7 +201,7 @@ const AddBookBox = () => {
 
 				.period {
 					display: block;
-					width: 80%;
+					width: 55%;
 					/* margin: 0px; */
 					/* margin-right: 0px; */
 					font-size: 15px;
@@ -248,19 +247,19 @@ const AddBookBox = () => {
 				}
 
 				.btn {
-					display: block;
-					margin: 7px;
-					cursor: pointer;
-					text-align: center;
-					background-color: midnightblue;
-					border: none;
-					border-radius: 10px;
-					color: white;
-					height: 60%;
-					font-size: 17px;
 					font-family: inherit;
 					line-height: 1.75em;
-					opacity: 0.9;
+					letter-spacing: -0.05em;
+					border: none;
+					color: white;
+					background-color: midnightblue;
+					opacity: 0.85;
+					-webkit-border-radius: 10px;
+					-moz-border-radius: 10px;
+					border-radius: 10px;
+					font-size: 15px;
+					margin-left: 3px;
+					cursor: pointer;
 				}
 
 				.btn:hover {

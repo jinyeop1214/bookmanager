@@ -18,18 +18,11 @@ const ClosedBookBox = (props: ClosedBookBoxProps) => {
 
 	return (
 		<div className="box">
-			<div className="bookname">
-				<span className="data">{bookname}</span>
-			</div>
+			<div className="bookname">{bookname}</div>
 			<div className="period">
-				<div className="data">
-					{from}
-					<br />~ {to}
-				</div>
+				{from} ~ {to}
 			</div>
-			<div className="theme">
-				<span className="data">{theme}</span>
-			</div>
+			<div className="theme">{theme}</div>
 			<div className="open-button-wrapper">
 				<span></span>
 				<button className="open-button" onClick={toggleOpen}>
@@ -42,8 +35,7 @@ const ClosedBookBox = (props: ClosedBookBoxProps) => {
 					margin: 30px 0px;
 					margin-right: 45px;
 					width: 300px;
-					min-height: 200px;
-					padding: 20px;
+					padding: 20px 20px 15px 20px;
 					background-color: white;
 					box-sizing: border-box;
 					background: #fff;
@@ -54,52 +46,53 @@ const ClosedBookBox = (props: ClosedBookBoxProps) => {
 
 				.bookname {
 					font-family: inherit;
-					line-height: 1.75em;
-					letter-spacing: -0.05em;
-					margin-top: 5px;
-					margin-bottom: 5px;
+					font-size: 25px;
 					width: 258px;
+					font-weight: 500;
+					margin: 0px 0px 20px 0px;
+					letter-spacing: -0.05em;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
 				}
 
 				.period {
 					font-family: inherit;
 					line-height: 1.75em;
 					letter-spacing: -0.05em;
-					margin-bottom: 5px;
-					width: 258px;
+					font-size: 15px;
 				}
 
 				.theme {
 					font-family: inherit;
 					line-height: 1.75em;
 					letter-spacing: -0.05em;
-					margin-bottom: 5px;
-					width: 258px;
-				}
-
-				.data {
-					font-size: 18px;
-				}
-
-				.info {
-					opacity: 0.8;
+					font-size: 16px;
 				}
 
 				.open-button-wrapper {
 					display: grid;
 					grid-auto-flow: column;
 					grid-template-columns: 3fr 1fr;
-					margin-top: 20px;
-					width: 258px;
+					margin-top: 15px;
 				}
 
 				.open-button {
 					font-family: inherit;
 					line-height: 1.75em;
 					letter-spacing: -0.05em;
-					width: auto;
-					height: auto;
+					border: none;
+					color: white;
+					background-color: midnightblue;
+					opacity: 0.85;
+					border-radius: 10px;
 					font-size: 15px;
+					margin-left: 3px;
+					cursor: pointer;
+				}
+
+				.open-button:hover {
+					opacity: 1;
 				}
 			`}</style>
 		</div>

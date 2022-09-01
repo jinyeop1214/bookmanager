@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import { DateFormat } from "../functions/DateFormat";
 import { Book } from "../Interfaces";
+import { selectUser, useAppSelector } from "../store/reducers/user";
 
 interface OpenedBoxProps {
 	book: Book;
@@ -11,11 +12,13 @@ interface OpenedBoxProps {
 
 const OpenedBox = (props: OpenedBoxProps) => {
 	const router = useRouter();
+	const { uid, isLoggedIn, id, nickname } = useAppSelector(selectUser);
 	const { book_id, bookname, start, end, theme, review, user_id } =
 		props.book;
 	const toggleOpen = props.toggleOpen;
 	const toggleUpdate = props.toggleUpdate;
 	const { from, to } = DateFormat(start, end);
+	console.log(uid, user_id);
 
 	const handleDeleteBook = async () => {
 		const ok = confirm("정말로 삭제하나요?");
@@ -24,33 +27,21 @@ const OpenedBox = (props: OpenedBoxProps) => {
 				await fetch(`/api/book/${book_id}`, {
 					method: "delete",
 				});
+				router.replace(`/feed`);
 			} catch (error) {
 				console.log(error);
 			}
 		}
-		router.replace(`/feed`);
 	};
 
 	return (
 		<div className="box">
-			<div className="bookname">
-				<span className="info">제목: </span>
-				<span className="data">{bookname}</span>
-			</div>
+			<div className="bookname">{bookname}</div>
 			<div className="period">
-				<div className="info">기간: </div>
-				<div className="data">
-					{from}
-					<br />~ {to}
-				</div>
+				{from} ~ {to}
 			</div>
-			<div className="theme">
-				<span className="info">분야: </span>
-				<span className="data">{theme}</span>
-			</div>
-			<div className="review">
-				<div className="data">&nbsp;{review}</div>
-			</div>
+			<div className="theme">{theme}</div>
+			<p className="review">&nbsp;{review}</p>
 			<div className="btn-wrapper">
 				<span></span>
 				<button className="update-btn" onClick={toggleUpdate}>
@@ -70,8 +61,7 @@ const OpenedBox = (props: OpenedBoxProps) => {
 						margin: 30px 0px;
 						margin-right: 45px;
 						width: 300px;
-						min-height: 200px;
-						padding: 20px;
+						padding: 20px 20px 15px 20px;
 						background-color: white;
 						box-sizing: border-box;
 						background: #fff;
@@ -81,89 +71,97 @@ const OpenedBox = (props: OpenedBoxProps) => {
 					}
 
 					.bookname {
-						display: grid;
-						grid-auto-flow: column;
-						grid-template-columns: 1fr 6fr;
 						font-family: inherit;
-						line-height: 1.75em;
+						font-size: 25px;
+						font-weight: 500;
+						margin: 0px 0px 15px 0px;
 						letter-spacing: -0.05em;
-						margin-top: 5px;
-						margin-bottom: 5px;
-						width: 258px;
 					}
 
 					.period {
-						display: grid;
-						grid-auto-flow: column;
-						grid-template-columns: 1fr 6fr;
 						font-family: inherit;
 						line-height: 1.75em;
 						letter-spacing: -0.05em;
-						margin-bottom: 5px;
-						width: 258px;
+						font-size: 15px;
 					}
 
 					.theme {
-						display: grid;
-						grid-auto-flow: column;
-						grid-template-columns: 1fr 6fr;
 						font-family: inherit;
 						line-height: 1.75em;
 						letter-spacing: -0.05em;
-						margin-bottom: 5px;
-						width: 258px;
+						font-size: 16px;
 					}
 
 					.review {
 						font-family: inherit;
 						line-height: 1.75em;
 						letter-spacing: -0.05em;
-						width: 258px;
-					}
-
-					.data {
-						font-size: 18px;
-					}
-
-					.info {
-						opacity: 0.8;
+						padding: 5px 10px 5px 10px;
+						max-height: 300px;
+						overflow-y: auto;
 					}
 
 					.btn-wrapper {
 						display: grid;
 						grid-auto-flow: column;
 						grid-template-columns: 1fr 1fr 1fr 1fr;
-						margin-top: 20px;
-						width: 258px;
+						margin-top: 15px;
 					}
 
 					.update-btn {
+						visibility: ${uid === user_id ? `visible` : `hidden`};
 						font-family: inherit;
 						line-height: 1.75em;
 						letter-spacing: -0.05em;
-						width: auto;
-						height: auto;
+						border: none;
+						color: white;
+						background-color: midnightblue;
+						opacity: 0.85;
+						border-radius: 10px;
 						font-size: 15px;
+						margin-left: 3px;
+						cursor: pointer;
+					}
+
+					.update-btn:hover {
+						opacity: 1;
 					}
 
 					.delete-btn {
+						visibility: ${uid === user_id ? `visible` : `hidden`};
 						font-family: inherit;
 						line-height: 1.75em;
 						letter-spacing: -0.05em;
-						width: auto;
-						height: auto;
+						border: none;
+						color: white;
+						background-color: midnightblue;
+						opacity: 0.85;
+						border-radius: 10px;
 						font-size: 15px;
-						margin-left: 5px;
+						margin-left: 3px;
+						cursor: pointer;
+					}
+
+					.delete-btn:hover {
+						opacity: 1;
 					}
 
 					.close-btn {
 						font-family: inherit;
 						line-height: 1.75em;
 						letter-spacing: -0.05em;
-						width: auto;
-						height: auto;
+						border: none;
+						color: white;
+						background-color: midnightblue;
+						opacity: 0.85;
+						border-radius: 10px;
 						font-size: 15px;
-						margin-left: 5px;
+						margin-left: 3px;
+						cursor: pointer;
+					}
+
+					.close-btn:hover {
+						opacity: 1;
 					}
 				`}
 			</style>
