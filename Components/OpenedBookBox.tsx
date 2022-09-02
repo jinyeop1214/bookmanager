@@ -18,7 +18,6 @@ const OpenedBox = (props: OpenedBoxProps) => {
 	const toggleOpen = props.toggleOpen;
 	const toggleUpdate = props.toggleUpdate;
 	const { from, to } = DateFormat(start, end);
-	console.log(uid, user_id);
 
 	const handleDeleteBook = async () => {
 		const ok = confirm("정말로 삭제하나요?");

@@ -33,7 +33,7 @@ export default async function userHandler(
 			});
 
 			const userResult = await executeQuery({
-				query: `SELECT id FROM users WHERE id = ? password = ?`,
+				query: `SELECT user_id FROM users WHERE id = ? and password = ?`,
 				values: [id, password],
 			});
 
@@ -41,8 +41,8 @@ export default async function userHandler(
 			res.status(200).json({
 				user: {
 					user_id: user[0].user_id,
-					id: user[0].id,
-					nickname: user[0].nickname,
+					id: id,
+					nickname: nickname,
 				},
 				error: null,
 			});

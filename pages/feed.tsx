@@ -18,7 +18,6 @@ interface FeedProps {
  */
 const Home: NextPage<FeedProps> = ({ books }) => {
 	const { isLoggedIn, uid, id, nickname } = useAppSelector(selectUser);
-	console.log("!!!!!!", isLoggedIn, uid, id, nickname);
 	const router = useRouter();
 	const myBooks = books.filter((book) => book.user_id === uid);
 
@@ -99,3 +98,17 @@ export const getServerSideProps: GetServerSideProps = async (_context) => {
 	const body = await response.json();
 	return { props: { books: body.books } };
 };
+
+// redux
+// export const getServerSideProps: GetServerSideProps =
+// 	wrapper.getServerSideProps((store) => async (_context) => {
+//		console.log(store.getState());
+// 		const response = await fetch("http://localhost:3000/api/books", {
+// 			method: "get",
+// 			headers: {
+// 				"Content-Type": "application/json",
+// 			},
+// 		});
+// 		const body = await response.json();
+// 		return { props: { books: body.books } };
+// 	});

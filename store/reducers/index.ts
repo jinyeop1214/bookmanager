@@ -1,8 +1,7 @@
 import { AnyAction, CombinedState, combineReducers } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
-import { User } from "../../Interfaces";
-
 import userSlice from "./user";
+import { User } from "../../Interfaces";
 
 const appReducer = combineReducers({
 	userSlice,

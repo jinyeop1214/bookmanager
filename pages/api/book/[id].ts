@@ -12,8 +12,6 @@ export default async function userHandler(
 				method,
 			} = req;
 
-			console.log(id, method);
-
 			switch (method) {
 				case "GET":
 					// Get data from your database
