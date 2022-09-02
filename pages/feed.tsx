@@ -23,7 +23,7 @@ const Home: NextPage<FeedProps> = ({ books }) => {
 
 	useEffect(() => {
 		if (!isLoggedIn) router.replace(`/`);
-	}, [isLoggedIn]);
+	}, [isLoggedIn, router]);
 
 	return (
 		<>

@@ -4,7 +4,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { logOut, selectUser, useAppSelector } from "../../store/reducers/user";
 
-const header = () => {
+const Header = () => {
 	const router = useRouter();
 	const dispatch = useDispatch();
 	const { isLoggedIn, uid, id, nickname } = useAppSelector(selectUser);
@@ -110,4 +110,4 @@ const header = () => {
 	);
 };
 
-export default header;
+export default Header;
