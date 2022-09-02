@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { executeQuery } from "../../schema/Database";
+import bcrypt from "bcrypt";
 
 export default async function userHandler(
 	req: NextApiRequest,
@@ -17,15 +18,16 @@ export default async function userHandler(
 			});
 			const user = JSON.parse(JSON.stringify(logInResult));
 			if (user.length === 0) {
-				console.log("No ID");
 				res.status(200).json({ user: null, error: "ID" });
 				return resolve();
 			}
-			if (user[0].password !== password) {
-				console.log("Wrong Password");
+
+			const match = await bcrypt.compare(password, user[0].password);
+			if (!match) {
 				res.status(200).json({ user: null, error: "Password" });
 				return resolve();
 			}
+
 			const loggedInUser = {
 				user_id: user[0].user_id,
 				id: user[0].id,

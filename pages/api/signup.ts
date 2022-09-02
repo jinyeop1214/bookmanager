@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { executeQuery } from "../../schema/Database";
+import bcrypt from "bcrypt";
 
 /**
  * @param req
@@ -16,6 +17,7 @@ export default async function userHandler(
 				method,
 				body: { id, password, nickname },
 			} = req;
+			const saltRounds = 10;
 
 			const sameIDResult = await executeQuery({
 				query: `SELECT id FROM users WHERE id = ?`,
@@ -27,14 +29,20 @@ export default async function userHandler(
 				return resolve();
 			}
 
+			const hash = await bcrypt.hash(password, saltRounds);
+			if (!hash) {
+				res.status(200).json({ user: null, error: "HASH" });
+				return resolve();
+			}
+
 			await executeQuery({
 				query: `INSERT INTO users(id, password, nickname) VALUES(?, ?, ?)`,
-				values: [id, password, nickname],
+				values: [id, hash, nickname],
 			});
 
 			const userResult = await executeQuery({
 				query: `SELECT user_id FROM users WHERE id = ? and password = ?`,
-				values: [id, password],
+				values: [id, hash],
 			});
 
 			const user = JSON.parse(JSON.stringify(userResult));
