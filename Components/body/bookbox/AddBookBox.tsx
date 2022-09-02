@@ -1,10 +1,9 @@
 import { useRouter } from "next/router";
 import React, { ChangeEvent, useState } from "react";
-import { Book } from "../Interfaces";
-import { selectUser, useAppSelector } from "../store/reducers/user";
+import { Book } from "../../../Interfaces";
+import { selectUser, useAppSelector } from "../../../store/reducers/user";
 
 /**
- * start 날짜 고르면 end는 그 이후. 그 전으로는 disable하면 좋다.
  * @returns
  */
 const AddBookBox = () => {

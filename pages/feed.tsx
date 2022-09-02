@@ -1,8 +1,8 @@
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import AddBookBox from "../components/AddBookBox";
-import BookBox from "../components/BookBox";
+import AddBookBox from "../components/body/bookbox/AddBookBox";
+import BookBox from "../components/body/bookbox/BookBox";
 import Header from "../components/header/Header";
 import { Book, User } from "../Interfaces";
 import { wrapper } from "../store";

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 import { useDispatch } from "react-redux";
-import { logIn, selectUser, useAppSelector } from "../store/reducers/user";
+import { logIn } from "../store/reducers/user";
 
 const Sign: NextPage = () => {
 	const dispatch = useDispatch();

@@ -1,34 +1,44 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Book Manager
 
-## Getting Started
+책을 읽은 직후의 생생한 기억과 느낌을 오래도록 보관하기 위해.
+메모장보단 크고 독후감보단 작은 Book Manager.
+<br/>
 
-First, run the development server:
+## Period
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+2022.8.23 ~
+<br/>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tech Stack
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+-   React
+-   Next.js
+-   Redux
+-   Serverless MySQL
+-   TypeScript
+    <br/>
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## Description
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+로그인이 필요한 서비스로, 회원간에 독서 정보와 후기를 기록하고 공유합니다.
 
-## Learn More
+### Features
 
-To learn more about Next.js, take a look at the following resources:
+#### Main Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. 로그인 및 회원가입
+2. 양식에 따라 독서 기록을 적은 뒤 등록
+3. 등록한 자신의 독서 기록에 대해 수정 및 삭제
+4. 모든 회원의 독서 기록을 함께 공유
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+#### Additional Features
 
-## Deploy on Vercel
+1. 자신이 등록한 독서 기록에만 수정 및 삭제 버튼 표시
+2. 양식의 모든 칸을 채웠을 때에만 버튼 활성화
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Needs for Improvement
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. 로그인한 유저의 마이페이지 화면
+2. 자신의 독서 기록만을 보기 위한 필터링
+3. 각 독서 기록에 등록한 유저 정보 기입
+4. ..

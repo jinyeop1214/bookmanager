@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState } from "react";
-import { Book } from "../Interfaces";
+import { Book } from "../../../Interfaces";
 
 interface UpdatedBoxProps {
 	book: Book;

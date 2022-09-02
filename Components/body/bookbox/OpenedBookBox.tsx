@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import React from "react";
-import { DateFormat } from "../functions/DateFormat";
-import { Book } from "../Interfaces";
-import { selectUser, useAppSelector } from "../store/reducers/user";
+import { DateFormat } from "../../../functions/DateFormat";
+import { Book } from "../../../Interfaces";
+import { selectUser, useAppSelector } from "../../../store/reducers/user";
 
 interface OpenedBoxProps {
 	book: Book;

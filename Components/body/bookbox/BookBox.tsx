@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { Book } from "../Interfaces";
+import { Book } from "../../../Interfaces";
 import ClosedBookBox from "./ClosedBookBox";
 import OpenedBox from "./OpenedBookBox";
 import UpdatedBox from "./UpdatedBookBox";

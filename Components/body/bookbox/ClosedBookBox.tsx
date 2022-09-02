@@ -1,5 +1,5 @@
-import { DateFormat } from "../functions/DateFormat";
-import { Book } from "../Interfaces";
+import { DateFormat } from "../../../functions/DateFormat";
+import { Book } from "../../../Interfaces";
 
 interface ClosedBookBoxProps {
 	book: Book;

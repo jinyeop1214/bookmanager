@@ -14,8 +14,7 @@ export default async function userHandler(
 
 			switch (method) {
 				case "GET":
-					// Get data from your database
-					// res.status(200).json({ id, name: `User ${id}` });
+					//
 					break;
 				case "POST":
 					//
@@ -29,8 +28,6 @@ export default async function userHandler(
 						query: `UPDATE books SET bookname = ?, start = ?, end = ?, theme = ?, review = ? WHERE book_id = ?`,
 						values: [bookname, start, end, theme, review, id],
 					});
-					// Update or create data in your database
-					// res.status(200).json({ id, name: name || `User ${id}` });
 					break;
 				case "DELETE":
 					await executeQuery({

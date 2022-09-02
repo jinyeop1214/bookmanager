@@ -1,5 +1,5 @@
 import React from "react";
-import Seo from "./Seo";
+import Title from "./Title";
 
 interface layoutProps {
 	children: React.ReactNode;
@@ -8,7 +8,7 @@ interface layoutProps {
 const Layout = ({ children }: layoutProps) => {
 	return (
 		<>
-			<Seo />
+			<Title />
 			<div>{children}</div>
 		</>
 	);
