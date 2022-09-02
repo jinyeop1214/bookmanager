@@ -15,7 +15,7 @@ CREATE TABLE `books` (
     `start` date NOT NULL,
     `end` date,
     `theme` varchar(10) NOT NULL,
-    `review` varchar(1024) NOT NULL,
+    `review` varchar(2048) NOT NULL,
     `user_id` int(11) NOT NULL,
     PRIMARY KEY (`book_id`)
 );

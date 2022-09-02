@@ -38,7 +38,6 @@ const ClosedBookBox = (props: ClosedBookBoxProps) => {
 					padding: 20px 20px 15px 20px;
 					background-color: white;
 					box-sizing: border-box;
-					background: #fff;
 					border-radius: 10px;
 					box-shadow: rgb(0 0 0 / 12%) 0px 6px 16px;
 					border: 1px solid rgb(221, 221, 221);

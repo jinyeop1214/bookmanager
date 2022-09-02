@@ -13,6 +13,8 @@ const Sign: NextPage = () => {
 	const [nickname, setNickname] = useState("");
 	const [wrongText, setWrongText] = useState("");
 	const [newAccount, setNewAccount] = useState(false);
+	const isDisable =
+		id === "" || password === "" || (newAccount && nickname === "");
 
 	const onChangeId = (e: ChangeEvent<HTMLInputElement>) => {
 		setId(e.target.value);
@@ -48,12 +50,10 @@ const Sign: NextPage = () => {
 	 */
 	const onBtnClick = async () => {
 		if (id === "" || password === "") {
-			setWrongText("빈칸을 채워주세요.");
 			return;
 		}
 
 		if (newAccount && nickname === "") {
-			setWrongText("빈칸을 채워주세요.");
 			return;
 		}
 
@@ -157,21 +157,23 @@ const Sign: NextPage = () => {
 				/>
 			)}
 			<div className="warning">{wrongText}</div>
-			<button className="btn" onClick={onBtnClick}>
+			<button
+				className="btn"
+				onClick={isDisable ? undefined : onBtnClick}
+			>
 				{newAccount ? "회원가입" : "로그인"}
 			</button>
 			<div className="border-line"></div>
-			<button className="signup-btn" onClick={onToggleClick}>
+			<button className="toggle-btn" onClick={onToggleClick}>
 				{newAccount ? "로그인하러 가기" : "새 계정 만들기"}
 			</button>
 			<style jsx>{`
 				.container {
-					max-width: 376px;
-					margin: 100px auto;
+					max-width: 350px;
+					margin: 80px auto;
 					padding: 20px 16px 15px;
 					background-color: white;
 					box-sizing: border-box;
-					background: #fff;
 					border-radius: 10px;
 					box-shadow: rgb(0 0 0 / 12%) 0px 6px 16px;
 					border: 1px solid rgb(221, 221, 221);
@@ -183,7 +185,7 @@ const Sign: NextPage = () => {
 					color: midnightblue;
 					padding: 0px 0px 30px 0px;
 					border-bottom: 2px solid midnightblue;
-					margin-bottom: 25px;
+					margin-bottom: 40px;
 					font-family: inherit;
 					letter-spacing: -0.02em;
 				}
@@ -194,11 +196,10 @@ const Sign: NextPage = () => {
 
 				.id {
 					display: block;
-					width: 94%;
-					margin: 10px;
+					margin: 10px auto;
 					font-size: 20px;
 					padding: 8px;
-					margin-bottom: 12px;
+					width: 80%;
 					box-sizing: border-box;
 					border: 2px solid #c4c4c4;
 					border-radius: 10px;
@@ -206,9 +207,8 @@ const Sign: NextPage = () => {
 
 				.password {
 					display: block;
-					width: 94%;
-					margin: 10px;
-					margin-bottom: 15px;
+					margin: 10px auto;
+					width: 80%;
 					font-size: 20px;
 					padding: 8px;
 					box-sizing: border-box;
@@ -218,10 +218,9 @@ const Sign: NextPage = () => {
 
 				.displayName {
 					display: block;
-					width: 94%;
-					margin: 10px;
-					margin-bottom: 15px;
+					margin: 10px auto;
 					font-size: 20px;
+					width: 80%;
 					padding: 8px;
 					box-sizing: border-box;
 					border: 2px solid #c4c4c4;
@@ -236,26 +235,25 @@ const Sign: NextPage = () => {
 					border-radius: 6px;
 					text-align: center;
 					color: white;
-					background-color: #191970;
+					background-color: ${isDisable ? `gray` : `midnightblue`};
 					font-size: 20px;
-					margin: 10px 10px 0px 10px;
-					width: 94%;
-					opacity: 0.9;
+					margin: 30px 10px 0px 10px;
+					opacity: 0.85;
 					padding: 8px;
 					border: none;
-					cursor: pointer;
+					cursor: ${isDisable ? `not-allowed` : `pointer`};
 					line-height: 30px;
 				}
 
 				.btn:hover {
+					opacity: ${isDisable ? `0.85` : `1`};
+				}
+
+				.toggle-btn:hover {
 					opacity: 1;
 				}
 
-				.signup-btn:hover {
-					opacity: 1;
-				}
-
-				.signup-btn {
+				.toggle-btn {
 					border-radius: 6px;
 					text-align: center;
 					color: white;
@@ -263,6 +261,7 @@ const Sign: NextPage = () => {
 					font-size: 17px;
 					opacity: 0.9;
 					padding: 8px;
+					width: auto;
 					border: none;
 					cursor: pointer;
 					line-height: 30px;

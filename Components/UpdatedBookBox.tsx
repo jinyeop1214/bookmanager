@@ -12,53 +12,41 @@ const UpdatedBox = (props: UpdatedBoxProps) => {
 		props.book;
 	const toggleUpdate = props.toggleUpdate;
 	const handleSetNewBook = props.handleSetNewBook;
-
 	const [newBookname, setNewBookname] = useState(bookname);
 	const [newStart, setNewStart] = useState(start.split("T")[0]);
 	const [newEnd, setNewEnd] = useState(end.split("T")[0]);
 	const [newTheme, setNewTheme] = useState(theme);
 	const [newReview, setNewReview] = useState(review);
-	const [wrongtext, setWrongText] = useState("");
+	const isDisable =
+		newBookname === "" ||
+		newStart === "" ||
+		newEnd === "" ||
+		newTheme === "" ||
+		newReview === "";
 
 	const onChangeBookname = (e: ChangeEvent<HTMLInputElement>) => {
 		setNewBookname(e.target.value);
-		setWrongText("");
 	};
 
 	const onChangeStart = (e: ChangeEvent<HTMLInputElement>) => {
 		if (newEnd !== "" && e.target.value > newEnd) setNewEnd("");
 		setNewStart(e.target.value);
-		setWrongText("");
 	};
 
 	const onChangeEnd = (e: ChangeEvent<HTMLInputElement>) => {
 		setNewEnd(e.target.value);
-		setWrongText("");
 	};
 
 	const onChangeTheme = (e: ChangeEvent<HTMLSelectElement>) => {
 		setNewTheme(e.target.value);
-		setWrongText("");
 	};
 
 	const onChangeReview = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		setNewReview(e.target.value);
-		setWrongText("");
 	};
 
 	const handleUpdateBook = async () => {
 		try {
-			if (
-				newBookname === "" ||
-				newStart === "" ||
-				newEnd === "" ||
-				newTheme === "" ||
-				newReview === ""
-			) {
-				setWrongText("빈칸을 모두 채워주세요.");
-				return;
-			}
-
 			const book: Omit<Book, "book_id" | "user_id"> = {
 				bookname: newBookname,
 				start: newStart,
@@ -88,6 +76,7 @@ const UpdatedBox = (props: UpdatedBoxProps) => {
 				value={newBookname}
 				type="text"
 				onChange={onChangeBookname}
+				placeholder="제목"
 			/>
 			<input
 				className="period"
@@ -120,14 +109,16 @@ const UpdatedBox = (props: UpdatedBoxProps) => {
 			<textarea
 				className="review"
 				value={newReview}
-				cols={32}
-				rows={8}
 				onChange={onChangeReview}
+				placeholder="생각을 자유롭게 남겨주세요!"
+				autoFocus
 			/>
-			<div className="warning">{wrongtext}</div>
 			<div className="btn-wrapper">
 				<span></span>
-				<button className="done-btn" onClick={handleUpdateBook}>
+				<button
+					className="done-btn"
+					onClick={isDisable ? undefined : handleUpdateBook}
+				>
 					완료
 				</button>
 				<button className="cancel-btn" onClick={toggleUpdate}>
@@ -140,11 +131,9 @@ const UpdatedBox = (props: UpdatedBoxProps) => {
 					margin: 30px 0px;
 					margin-right: 45px;
 					width: 300px;
-					min-height: 200px;
-					padding: 20px;
+					padding: 20px 20px 15px 20px;
 					background-color: white;
 					box-sizing: border-box;
-					background: #fff;
 					border-radius: 10px;
 					box-shadow: rgb(0 0 0 / 12%) 0px 6px 16px;
 					border: 1px solid rgb(221, 221, 221);
@@ -152,92 +141,95 @@ const UpdatedBox = (props: UpdatedBoxProps) => {
 
 				.bookname {
 					display: block;
-					width: 80%;
-					/* margin: 0px; */
-					/* margin-right: 0px; */
-					font-size: 15px;
-					padding: 8px;
-					margin-bottom: 7px;
+					width: 90%;
+					font-size: 20px;
+					padding: 5px;
 					box-sizing: border-box;
-					border: 2px solid #c4c4c4;
+					border: 1.5px solid #c4c4c4;
 					border-radius: 10px;
 					font-family: inherit;
-					/* line-height: 1.75em; */
 					letter-spacing: -0.02em;
+					margin: 0px 0px 15px 0px;
 				}
 
 				.period {
 					display: block;
-					width: 80%;
-					/* margin: 0px; */
-					/* margin-right: 0px; */
+					width: 50%;
 					font-size: 15px;
-					padding: 8px;
-					margin-bottom: 7px;
+					padding: 3px;
 					box-sizing: border-box;
-					border: 2px solid #c4c4c4;
+					border: 1.5px solid #c4c4c4;
 					border-radius: 10px;
 					font-family: inherit;
-					/* line-height: 1.75em; */
 					letter-spacing: -0.02em;
+					margin: 0px 0px 5px 0px;
 				}
 
 				.theme {
 					display: block;
 					font-size: 15px;
-					padding: 5px;
-					margin-bottom: 7px;
+					padding: 3px;
 					box-sizing: border-box;
-					border: 2px solid #c4c4c4;
+					border: 1.5px solid #c4c4c4;
 					border-radius: 10px;
 					font-family: inherit;
-					/* line-height: 1.75em; */
 					letter-spacing: -0.02em;
-				}
-
-				.warning {
-					color: red;
+					margin: 0px 0px 10px 0px;
 				}
 
 				.review {
 					display: block;
+					width: 100%;
+					min-height: 250px;
+					padding: 5px;
 					resize: none;
-					font-size: 15px;
-					margin-right: 15px;
-					padding: 7px;
 					box-sizing: border-box;
-					border: 2px solid #c4c4c4;
+					border: 1.5px solid #c4c4c4;
 					border-radius: 10px;
 					font-family: inherit;
-					/* line-height: 1.75em; */
-					/* letter-spacing: -.03em; */
 				}
 
 				.btn-wrapper {
 					display: grid;
 					grid-auto-flow: column;
 					grid-template-columns: 1fr 1fr 1fr;
-					margin-top: 20px;
-					width: 258px;
+					margin-top: 15px;
 				}
 
 				.done-btn {
 					font-family: inherit;
 					line-height: 1.75em;
 					letter-spacing: -0.05em;
-					width: auto;
-					height: auto;
+					border: none;
+					color: white;
+					background-color: ${isDisable ? `gray` : `midnightblue`};
+					opacity: 0.85;
+					border-radius: 10px;
 					font-size: 15px;
+					margin-left: 3px;
+					cursor: ${isDisable ? `not-allowed` : `pointer`};
+				}
+
+				.done-btn:hover {
+					opacity: ${isDisable ? `0.85` : `1`};
 				}
 
 				.cancel-btn {
 					font-family: inherit;
 					line-height: 1.75em;
 					letter-spacing: -0.05em;
-					width: auto;
-					height: auto;
+					border: none;
+					color: white;
+					background-color: midnightblue;
+					opacity: 0.85;
+					border-radius: 10px;
 					font-size: 15px;
-					margin-left: 5px;
+					margin-left: 3px;
+					cursor: pointer;
+				}
+
+				.cancel-btn:hover {
+					opacity: 1;
 				}
 			`}</style>
 		</div>

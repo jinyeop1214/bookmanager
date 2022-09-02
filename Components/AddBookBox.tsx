@@ -14,47 +14,36 @@ const AddBookBox = () => {
 	const [end, setEnd] = useState<string>("");
 	const [theme, setTheme] = useState<string>("");
 	const [review, setReview] = useState<string>("");
-	const [wrongtext, setWrongText] = useState<string>("");
 	const router = useRouter();
+	const isDisable =
+		bookname === "" ||
+		start === "" ||
+		end === "" ||
+		theme === "" ||
+		review === "";
 
 	const onChangeBookname = (e: ChangeEvent<HTMLInputElement>) => {
 		setBookname(e.target.value);
-		setWrongText("");
 	};
 
 	const onChangeStart = (e: ChangeEvent<HTMLInputElement>) => {
 		if (end !== "" && e.target.value > end) setEnd("");
 		setStart(e.target.value);
-		setWrongText("");
 	};
 
 	const onChangeEnd = (e: ChangeEvent<HTMLInputElement>) => {
 		setEnd(e.target.value);
-		setWrongText("");
 	};
 
 	const onChangeTheme = (e: ChangeEvent<HTMLSelectElement>) => {
 		setTheme(e.target.value);
-		setWrongText("");
 	};
 
 	const onChangeReview = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		setReview(e.target.value);
-		setWrongText("");
 	};
 
 	const handleAddBook = async () => {
-		if (
-			bookname === "" ||
-			start === "" ||
-			end === "" ||
-			theme === "" ||
-			review === ""
-		) {
-			setWrongText("빈칸을 모두 채워주세요.");
-			return;
-		}
-
 		const book: Omit<Book, "book_id"> = {
 			bookname,
 			start,
@@ -64,37 +53,35 @@ const AddBookBox = () => {
 			user_id: uid as number,
 		};
 
-		const response = await fetch("/api/addBook", {
+		await fetch("/api/addBook", {
 			method: "post",
 			headers: {
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify(book),
 		});
-		// const body = await response.json();
+
 		setBookname("");
 		setStart("");
 		setEnd("");
 		setTheme("");
 		setReview("");
 		router.replace("/feed");
-
-		//
 	};
 
 	return (
 		<div className="container">
 			<div className="new-book-data">
 				<div>
-					<div>제목</div>
+					<div className="description-bookname">제목</div>
 					<input
 						className="bookname"
 						value={bookname}
 						type="text"
 						onChange={onChangeBookname}
-						placeholder="책 제목"
+						placeholder="제목"
 					/>
-					<div>읽기 시작한 날짜</div>
+					<div className="description">읽기 시작한 날짜</div>
 					<input
 						className="period"
 						value={start}
@@ -108,7 +95,7 @@ const AddBookBox = () => {
 								.split("T")[0]
 						}
 					/>
-					<div>다 읽은 날짜</div>
+					<div className="description">다 읽은 날짜</div>
 					<input
 						className="period"
 						value={end}
@@ -123,13 +110,15 @@ const AddBookBox = () => {
 						}
 						min={start === "" ? undefined : start}
 					/>
-					<div>분야</div>
+					<div className="description">분야</div>
 					<select
 						className="theme"
 						value={theme}
 						onChange={onChangeTheme}
 					>
-						<option value="">theme</option>
+						<option value="" disabled>
+							선택
+						</option>
 						<option value="문학">문학</option>
 						<option value="철학">철학</option>
 						<option value="소설">소설</option>
@@ -139,21 +128,20 @@ const AddBookBox = () => {
 						<option value="예술">예술</option>
 						<option value="기타">기타</option>
 					</select>
-					<div className="warning">{wrongtext}</div>
 				</div>
 				<textarea
 					className="review"
 					value={review}
-					cols={50}
-					rows={7}
 					onChange={onChangeReview}
 					placeholder="생각을 자유롭게 남겨주세요!"
 				/>
 			</div>
 			<div className="btn-container">
-				<div></div>
-				<button className="btn" onClick={handleAddBook}>
-					등록하기
+				<button
+					className="btn"
+					onClick={isDisable ? undefined : handleAddBook}
+				>
+					등록
 				</button>
 			</div>
 			<style jsx>{`
@@ -162,19 +150,13 @@ const AddBookBox = () => {
 					padding: 20px 15px;
 					background-color: white;
 					box-sizing: border-box;
-					background: #fff;
 					border-radius: 10px;
 					box-shadow: rgb(0 0 0 / 12%) 0px 6px 16px;
 					border: 1px solid rgb(221, 221, 221);
 					display: grid;
 					grid-auto-flow: column;
 					grid-template-columns: 12fr 1fr;
-				}
-
-				.btn-container {
-					display: grid;
-					grid-auto-flow: row;
-					grid-template-rows: 7fr 1fr;
+					overflow: scroll;
 				}
 
 				.new-book-data {
@@ -186,32 +168,24 @@ const AddBookBox = () => {
 				.bookname {
 					display: block;
 					width: 90%;
-					/* margin: 0px; */
-					/* margin-right: 0px; */
-					font-size: 15px;
-					padding: 8px;
-					margin-bottom: 7px;
+					font-size: 20px;
+					padding: 7px;
 					box-sizing: border-box;
-					border: 2px solid #c4c4c4;
+					border: 1.5px solid #c4c4c4;
 					border-radius: 10px;
 					font-family: inherit;
-					/* line-height: 1.75em; */
 					letter-spacing: -0.02em;
 				}
 
 				.period {
 					display: block;
-					width: 55%;
-					/* margin: 0px; */
-					/* margin-right: 0px; */
+					width: 50%;
 					font-size: 15px;
-					padding: 8px;
-					margin-bottom: 7px;
+					padding: 5px;
 					box-sizing: border-box;
-					border: 2px solid #c4c4c4;
+					border: 1.5px solid #c4c4c4;
 					border-radius: 10px;
 					font-family: inherit;
-					/* line-height: 1.75em; */
 					letter-spacing: -0.02em;
 				}
 
@@ -219,31 +193,45 @@ const AddBookBox = () => {
 					display: block;
 					font-size: 15px;
 					padding: 5px;
-					margin-bottom: 7px;
 					box-sizing: border-box;
-					border: 2px solid #c4c4c4;
+					border: 1.5px solid #c4c4c4;
 					border-radius: 10px;
 					font-family: inherit;
-					/* line-height: 1.75em; */
 					letter-spacing: -0.02em;
 				}
 
-				.warning {
-					color: red;
+				.description {
+					font-family: inherit;
+					letter-spacing: -0.02em;
+					font-size: 14px;
+					padding: 13px 5px 3px 5px;
+				}
+
+				.description-bookname {
+					font-family: inherit;
+					letter-spacing: -0.02em;
+					font-size: 14px;
+					padding: 3px 5px 3px 5px;
 				}
 
 				.review {
 					display: block;
-					resize: none;
+					width: auto;
+					height: auto;
 					font-size: 15px;
-					margin-right: 15px;
-					padding: 7px;
+					margin-right: 10px;
+					padding: 10px;
 					box-sizing: border-box;
-					border: 2px solid #c4c4c4;
+					border: 1.5px solid #c4c4c4;
 					border-radius: 10px;
+					resize: none;
 					font-family: inherit;
-					/* line-height: 1.75em; */
-					/* letter-spacing: -.03em; */
+				}
+
+				.btn-container {
+					display: flex;
+					justify-content: flex-end;
+					flex-direction: column;
 				}
 
 				.btn {
@@ -252,18 +240,15 @@ const AddBookBox = () => {
 					letter-spacing: -0.05em;
 					border: none;
 					color: white;
-					background-color: midnightblue;
+					background-color: ${isDisable ? `gray` : `midnightblue`};
 					opacity: 0.85;
-					-webkit-border-radius: 10px;
-					-moz-border-radius: 10px;
 					border-radius: 10px;
 					font-size: 15px;
-					margin-left: 3px;
-					cursor: pointer;
+					cursor: ${isDisable ? `not-allowed` : `pointer`};
 				}
 
 				.btn:hover {
-					opacity: 1;
+					opacity: ${isDisable ? `0.85` : `1`};
 				}
 			`}</style>
 		</div>

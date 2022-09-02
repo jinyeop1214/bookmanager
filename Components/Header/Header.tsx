@@ -18,7 +18,7 @@ const header = () => {
 		<div className="header">
 			<div className="bar">
 				{/* {user.isLoggedIn ? ( */}
-				<button className="btn">{nickname}</button>
+				<button className="btn-nickname">{nickname}</button>
 				<span className="border-line"></span>
 				<button className="btn" onClick={handleLogOut}>
 					log out
@@ -69,6 +69,20 @@ const header = () => {
 						text-align: end;
 						border-top: 1px solid darkblue;
 						border-bottom: 2px solid darkblue;
+					}
+
+					.btn-nickname {
+						display: inline-block;
+						background-color: white;
+						text-decoration: none;
+						color: midnightblue;
+						font-size: 16.5px;
+						font-weight: bold;
+						font-family: inherit;
+						padding: 0px;
+						line-height: 1.75em;
+						border: none;
+						letter-spacing: -0.05em;
 					}
 
 					.btn {
