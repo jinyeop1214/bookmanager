@@ -9,14 +9,14 @@ import {
 	PURGE,
 	REGISTER,
 } from "redux-persist";
-import storage from "redux-persist/lib/storage";
 import { Context, createWrapper, MakeStore } from "next-redux-wrapper";
 import reducer from "./reducers";
+import storage from "./storage";
 
 const persistConfig = {
 	key: "root",
 	version: 1,
-	storage,
+	storage: storage,
 };
 
 const persistedReducer = persistReducer(persistConfig, reducer);

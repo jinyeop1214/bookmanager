@@ -103,7 +103,7 @@ const Sign: NextPage = () => {
 			if (body.error) {
 				switch (body.error) {
 					case "ID":
-						setWrongText("잘못된 ID입니다.");
+						setWrongText("존재하지 않는 ID입니다.");
 						break;
 					case "Password":
 						setWrongText("잘못된 비밀번호입니다.");
