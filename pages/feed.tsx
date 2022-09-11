@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import AddBookBox from "../components/body/bookbox/AddBookBox";
 import BookBox from "../components/body/bookbox/BookBox";
 import Header from "../components/header/Header";
+import { fetchBooks } from "../functions/FetchBooks";
 import { Book, User } from "../Interfaces";
 import { wrapper } from "../store";
 import { getData, selectUser, useAppSelector } from "../store/reducers/user";
@@ -26,7 +27,7 @@ const Home: NextPage<FeedProps> = ({ books }) => {
 		if (!isLoggedIn) router.replace(`/`);
 	}, [isLoggedIn, router]);
 
-	return (
+	return isLoggedIn ? (
 		<>
 			<Head>
 				<title>Book Manager</title>
@@ -92,20 +93,23 @@ const Home: NextPage<FeedProps> = ({ books }) => {
 				}
 			`}</style>
 		</>
-	);
+	) : null;
 };
 
 export default Home;
 
 export const getServerSideProps: GetServerSideProps = async (_context) => {
-	const response = await fetch("http://localhost:3000/api/books", {
-		method: "get",
-		headers: {
-			"Content-Type": "application/json",
-		},
-	});
-	const body = await response.json();
-	return { props: { books: body.books } };
+	const books = await fetchBooks();
+	console.log(books);
+	return { props: { books } };
+	// const response = await fetch("http://localhost:3000/api/books", {
+	// 	method: "get",
+	// 	headers: {
+	// 		"Content-Type": "application/json",
+	// 	},
+	// });
+	// const body = await response.json();
+	// return { props: { books: body.books } };
 };
 
 // redux

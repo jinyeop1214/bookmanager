@@ -129,7 +129,7 @@ const Sign: NextPage = () => {
 		}
 	};
 
-	return (
+	return !isLoggedIn ? (
 		<>
 			<Head>
 				<title>
@@ -296,7 +296,7 @@ const Sign: NextPage = () => {
 				`}</style>
 			</div>
 		</>
-	);
+	) : null;
 };
 
 export default Sign;
