@@ -1,4 +1,5 @@
 import type { GetServerSideProps, NextPage } from "next";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import AddBookBox from "../components/body/bookbox/AddBookBox";
@@ -27,6 +28,14 @@ const Home: NextPage<FeedProps> = ({ books }) => {
 
 	return (
 		<>
+			<Head>
+				<title>Book Manager</title>
+				<meta
+					name="Main Feed Page"
+					content="Main Feed Page of Book Manager App"
+				/>
+				<link rel="icon" href="/favicon.ico" />
+			</Head>
 			<Header />
 			<div className="container">
 				<div className="title">
