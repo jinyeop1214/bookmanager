@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { ChangeEvent, useState } from "react";
 import { Book } from "../../../Interfaces";
 import { selectUser, useAppSelector } from "../../../store/reducers/user";
@@ -13,13 +13,55 @@ const AddBookBox = () => {
 	const [end, setEnd] = useState<string>("");
 	const [theme, setTheme] = useState<string>("");
 	const [review, setReview] = useState<string>("");
-	const router = useRouter();
 	const isDisable =
 		bookname === "" ||
 		start === "" ||
 		end === "" ||
 		theme === "" ||
 		review === "";
+
+	const queryClient = useQueryClient();
+	const addBookMutation = useMutation(
+		async (book: Omit<Book, "book_id">) => {
+			const response = await fetch("/api/addBook", {
+				method: "post",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(book),
+			});
+			return await response.json();
+		},
+		{
+			onError: (error, _variables, _context) => {
+				console.log(error);
+				throw new Error("addBookMutation Error.");
+			},
+			onSuccess: (data, _variables, _context) => {
+				console.log("addBookData", data);
+
+				setBookname("");
+				setStart("");
+				setEnd("");
+				setTheme("");
+				setReview("");
+
+				//Updates from Mutation Responses
+				queryClient.setQueryData(
+					["books"],
+					(prev: Book[] | undefined): Book[] | undefined => [
+						...(prev ?? []),
+						data.book,
+					]
+				);
+
+				//Invalidation from Mutations
+				// queryClient.invalidateQueries(["books"]);
+
+				//=>no need router.replace(/feed);
+			},
+		}
+	);
 
 	const onChangeBookname = (e: ChangeEvent<HTMLInputElement>) => {
 		setBookname(e.target.value);
@@ -52,20 +94,7 @@ const AddBookBox = () => {
 			user_id: uid as number,
 		};
 
-		await fetch("/api/addBook", {
-			method: "post",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(book),
-		});
-
-		setBookname("");
-		setStart("");
-		setEnd("");
-		setTheme("");
-		setReview("");
-		router.replace("/feed");
+		addBookMutation.mutate(book);
 	};
 
 	return (

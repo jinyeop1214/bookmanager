@@ -7,7 +7,7 @@ export default async function userHandler(
 ) {
 	try {
 		const books = await fetchBooks();
-		res.status(200).json({ books });
+		return res.status(200).json({ books });
 	} catch (error) {
 		console.log(error);
 		throw new Error("Fetching books API returned Error.");

@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import { DateFormat } from "../../../functions/DateFormat";
 import { Book } from "../../../Interfaces";
@@ -11,7 +11,6 @@ interface OpenedBoxProps {
 }
 
 const OpenedBox = (props: OpenedBoxProps) => {
-	const router = useRouter();
 	const { uid, isLoggedIn, id, nickname } = useAppSelector(selectUser);
 	const { book_id, bookname, start, end, theme, review, user_id } =
 		props.book;
@@ -19,16 +18,43 @@ const OpenedBox = (props: OpenedBoxProps) => {
 	const toggleUpdate = props.toggleUpdate;
 	const { from, to } = DateFormat(start, end);
 
+	const queryClient = useQueryClient();
+	const deleteBookMutation = useMutation(
+		async (book_id: number) => {
+			const response = await fetch(`/api/book/${book_id}`, {
+				method: "delete",
+			});
+			return await response.json();
+		},
+		{
+			onError: (error, _variables, _context) => {
+				console.log(error);
+				throw new Error("deleteBookMutation Error.");
+			},
+			onSuccess: (_data, variables, _context) => {
+				console.log("variables", variables);
+
+				//Updates from Mutation Responses
+				queryClient.setQueryData(
+					["books"],
+					(prev: Book[] | undefined): Book[] | undefined =>
+						prev?.filter((book) => book.book_id !== variables)
+				);
+
+				//Invalidation from Mutations
+				// queryClient.invalidateQueries(["books"]);
+			},
+		}
+	);
+
 	const handleDeleteBook = async () => {
 		const ok = confirm("정말로 삭제하나요?");
 		if (ok) {
 			try {
-				await fetch(`/api/book/${book_id}`, {
-					method: "delete",
-				});
-				router.replace(`/feed`);
+				deleteBookMutation.mutate(book_id);
 			} catch (error) {
 				console.log(error);
+				throw new Error("delete confirm Error.");
 			}
 		}
 	};

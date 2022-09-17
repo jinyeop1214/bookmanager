@@ -17,23 +17,11 @@ const Header = () => {
 	return (
 		<div className="header">
 			<div className="bar">
-				{/* {user.isLoggedIn ? ( */}
 				<button className="btn-nickname">{nickname}</button>
 				<span className="border-line"></span>
 				<button className="btn" onClick={handleLogOut}>
 					log out
 				</button>
-				{/* ) : (
-					<>
-						<Link href="/login">
-							<a>Log In</a>
-						</Link>{" "}
-						|{" "}
-						<Link href="/signup">
-							<a>Sign Up</a>
-						</Link>
-					</>
-				)} */}
 			</div>
 			<div className="logo">Book Manager</div>
 			<style jsx>

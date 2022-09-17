@@ -5,6 +5,17 @@ export interface User {
 	nickname: string | null;
 }
 
+export interface SignUpRequestVariables {
+	id: string;
+	password: string;
+	nickname: string;
+}
+
+export interface LogInRequestVariables {
+	id: string;
+	password: string;
+}
+
 export interface UserPayload {
 	uid: number;
 	id: string;

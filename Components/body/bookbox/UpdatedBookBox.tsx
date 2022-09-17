@@ -1,3 +1,4 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { ChangeEvent, useState } from "react";
 import { Book } from "../../../Interfaces";
 
@@ -23,6 +24,46 @@ const UpdatedBox = (props: UpdatedBoxProps) => {
 		newEnd === "" ||
 		newTheme === "" ||
 		newReview === "";
+
+	const queryClient = useQueryClient();
+	const updateBookMutation = useMutation(
+		async (book: Omit<Book, "book_id" | "user_id">) => {
+			const response = await fetch(`/api/book/${book_id}`, {
+				method: "put",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(book),
+			});
+			return await response.json();
+		},
+		{
+			onError: (error, _variables, _context) => {
+				console.log(error);
+				throw new Error("updateBookMutation Error.");
+			},
+			onSuccess: (data, variables, _context) => {
+				console.log("updateBookData", data);
+
+				toggleUpdate();
+				handleSetNewBook({ ...props.book, ...variables }); //?
+
+				//Updates from Mutation Responses
+				queryClient.setQueryData(
+					["books"],
+					(prev: Book[] | undefined): Book[] | undefined =>
+						prev?.map((book) =>
+							book.book_id === book_id
+								? { ...book, ...variables }
+								: book
+						)
+				);
+
+				//Invalidation from Mutations
+				// queryClient.invalidateQueries(["books"]);
+			},
+		}
+	);
 
 	const onChangeBookname = (e: ChangeEvent<HTMLInputElement>) => {
 		setNewBookname(e.target.value);
@@ -55,15 +96,7 @@ const UpdatedBox = (props: UpdatedBoxProps) => {
 				review: newReview,
 			};
 
-			await fetch(`/api/book/${book_id}`, {
-				method: "put",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(book),
-			});
-			toggleUpdate();
-			handleSetNewBook({ ...props.book, ...book });
+			updateBookMutation.mutate(book);
 		} catch (error) {
 			console.log(error);
 		}

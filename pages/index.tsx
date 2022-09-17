@@ -1,9 +1,10 @@
+import { useMutation } from "@tanstack/react-query";
 import { NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { LogInRequestVariables, SignUpRequestVariables } from "../Interfaces";
 import { logIn, selectUser, useAppSelector } from "../store/reducers/user";
 
 const Sign: NextPage = () => {
@@ -21,6 +22,84 @@ const Sign: NextPage = () => {
 	useEffect(() => {
 		if (isLoggedIn) router.replace(`/feed`);
 	}, [isLoggedIn, router]);
+
+	const logInMutation = useMutation(
+		async (query: LogInRequestVariables) => {
+			const response = await fetch("/api/login", {
+				method: "post",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(query),
+			});
+			return await response.json();
+		},
+		{
+			onError: (error, _variables, _context) => {
+				console.log(error);
+				throw new Error("logInMutation Error.");
+			},
+			onSuccess: (data, _variables, _context) => {
+				console.log("data", data);
+				if (data.error) {
+					switch (data.error) {
+						case "ID":
+							setWrongText("존재하지 않는 ID입니다.");
+							break;
+						case "Password":
+							setWrongText("잘못된 비밀번호입니다.");
+							break;
+					}
+					return;
+				}
+				dispatch(
+					logIn({
+						uid: parseInt(data.user.user_id),
+						id: data.user.id,
+						nickname: data.user.nickname,
+					})
+				);
+				router.replace(`/feed`);
+			},
+		}
+	);
+	const signUpMutation = useMutation(
+		async (user: SignUpRequestVariables) => {
+			const response = await fetch("/api/signup", {
+				method: "post",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(user),
+			});
+			return await response.json();
+		},
+		{
+			onError: (error, _variables, _context) => {
+				console.log(error);
+				throw new Error("signUpMutation Error.");
+			},
+			onSuccess: (data, _variables, _context) => {
+				console.log("data", data);
+				if (data.error) {
+					switch (data.error) {
+						case "ID":
+							setWrongText("이미 존재하는 ID입니다.");
+							break;
+					}
+					return;
+				}
+				dispatch(
+					logIn({
+						uid: parseInt(data.user.user_id),
+						id,
+						nickname,
+					})
+				);
+				router.replace(`/feed`);
+			},
+		}
+	);
 
 	const onChangeId = (e: ChangeEvent<HTMLInputElement>) => {
 		setId(e.target.value);
@@ -55,81 +134,25 @@ const Sign: NextPage = () => {
 	 * @returns
 	 */
 	const onBtnClick = async () => {
-		if (id === "" || password === "") {
-			return;
-		}
-
-		if (newAccount && nickname === "") {
-			return;
-		}
-
+		if (id === "" || password === "") return;
+		if (newAccount && nickname === "") return;
 		if (newAccount) {
-			//회원가입일때
-			const user = {
+			//회원가입
+			signUpMutation.mutate({
 				id,
 				password,
 				nickname,
-			};
-			const response = await fetch("/api/signup", {
-				method: "post",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(user),
 			});
-			const body = await response.json();
-			if (body.error) {
-				switch (body.error) {
-					case "ID":
-						setWrongText("이미 존재하는 ID입니다.");
-						break;
-				}
-				return;
-			}
-			dispatch(
-				logIn({
-					uid: parseInt(body.user.user_id),
-					id,
-					nickname,
-				})
-			);
-			router.replace(`/feed`);
 		} else {
-			//로그인일때
-			const userQuery = { id, password };
-			const response = await fetch("/api/login", {
-				method: "post",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(userQuery),
+			//로그인
+			logInMutation.mutate({
+				id,
+				password,
 			});
-			const body = await response.json();
-
-			if (body.error) {
-				switch (body.error) {
-					case "ID":
-						setWrongText("존재하지 않는 ID입니다.");
-						break;
-					case "Password":
-						setWrongText("잘못된 비밀번호입니다.");
-						break;
-				}
-				return;
-			}
-
-			dispatch(
-				logIn({
-					uid: parseInt(body.user.user_id),
-					id: body.user.id,
-					nickname: body.user.nickname,
-				})
-			);
-			router.replace(`/feed`);
 		}
 	};
 
-	return !isLoggedIn ? (
+	return (
 		<>
 			<Head>
 				<title>
@@ -142,11 +165,7 @@ const Sign: NextPage = () => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<div className="container">
-				<div className="title">
-					<Link href="/">
-						<a className="link">Book Manager</a>
-					</Link>
-				</div>
+				<div className="title">Book Manager</div>
 				<input
 					className="id"
 					value={id}
@@ -205,9 +224,6 @@ const Sign: NextPage = () => {
 						margin-bottom: 40px;
 						font-family: inherit;
 						letter-spacing: -0.02em;
-					}
-
-					.link {
 						font-size: 32px;
 					}
 
@@ -296,7 +312,7 @@ const Sign: NextPage = () => {
 				`}</style>
 			</div>
 		</>
-	) : null;
+	);
 };
 
 export default Sign;

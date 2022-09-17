@@ -5,54 +5,55 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import AddBookBox from "../components/body/bookbox/AddBookBox";
 import BookBox from "../components/body/bookbox/BookBox";
+import DisplayError from "../components/exceptions/DisplayError";
+import Loading from "../components/exceptions/Loading";
 import Header from "../components/header/Header";
 import { fetchBooks } from "../functions/FetchBooks";
 import { Book } from "../Interfaces";
 import { selectUser, useAppSelector } from "../store/reducers/user";
 
-interface FeedProps {
-	books: Array<Book>;
-}
+// interface FeedProps {
+// 	books: Array<Book>;
+// }
 
 /**
  * @param param0
  * @returns
+ * // mysql 시간대 안맞는 문제 유.
+ * //자동 refetching 시간을 늘릴 필요 유.
  */
-const Home: NextPage<FeedProps> = ({ books }) => {
-	const { isLoggedIn, uid, id, nickname } = useAppSelector(selectUser);
-	const { data, isLoading, isError } = useQuery(["books"], async () => {
-		const response = await fetch("/api/books", {
-			method: "get",
-			headers: {
-				"Content-Type": "application/json",
-			},
-		});
-		if (!response.ok) {
-			console.log("feed useQuery error.");
-			throw new Error("feed useQuery error.");
-		}
-		const body: { books: Book[] | undefined } = await response.json();
-		return body.books;
-	});
+const Home: NextPage = () => {
 	const router = useRouter();
+	const { isLoggedIn, uid, id, nickname } = useAppSelector(selectUser);
 
 	useEffect(() => {
 		if (!isLoggedIn) router.replace(`/`);
 	}, [isLoggedIn, router]);
 
-	// if (!books) return <h1>No Book</h1>;
-	// if (isFetching) console.log("isFetching");
+	const { data, isLoading, isError, isFetching } = useQuery(
+		["books"],
+		async () => {
+			const response = await fetch("/api/books", {
+				method: "get",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+			if (!response.ok) throw new Error("feed useQuery error.");
+			const body: { books: Book[] | undefined } = await response.json();
+			return body.books;
+		}
+	);
 
-	if (isLoading) return <h1>isLoading...</h1>;
-	if (isError) return <h1>isError</h1>;
-	if (!data) return <h1>No Data</h1>;
+	console.log("isFetching", isFetching);
 
-	console.log("BOOKS", data);
+	if (!isLoading && isError) return <DisplayError />;
 
-	const myBooks = data.filter((book) => book.user_id === uid);
+	console.log(data);
 
-	return isLoggedIn ? (
+	return isLoggedIn && data ? (
 		<>
+			<Loading loading={isLoading} />
 			<Head>
 				<title>Book Manager</title>
 				<meta
@@ -65,17 +66,16 @@ const Home: NextPage<FeedProps> = ({ books }) => {
 			<div className="container">
 				<div className="title">
 					<span className="registered_book">
-						내가 등록한 책: {myBooks.length}권
+						내가 등록한 책:{" "}
+						{data.filter((book) => book.user_id === uid).length}권
 					</span>
 				</div>
-				{isLoggedIn && <AddBookBox />}
-				{isLoggedIn && (
-					<div className="books">
-						{data.map((book, _index) => (
-							<BookBox key={book.book_id} book={book} />
-						))}
-					</div>
-				)}
+				<AddBookBox />
+				<div className="books">
+					{data.map((book, _index) => (
+						<BookBox key={book.book_id} book={book} />
+					))}
+				</div>
 			</div>
 			<style jsx>{`
 				.body {

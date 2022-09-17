@@ -12,8 +12,8 @@ CREATE TABLE `users` (
 CREATE TABLE `books` (
     `book_id` int(11) NOT NULL AUTO_INCREMENT,
     `bookname` varchar(50) NOT NULL,
-    `start` date NOT NULL,
-    `end` date,
+    `start` timestamp NOT NULL,
+    `end` timestamp,
     `theme` varchar(10) NOT NULL,
     `review` varchar(2048) NOT NULL,
     `user_id` int(11) NOT NULL,

@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { Book } from "../../Interfaces";
 import { executeQuery } from "../../schema/Database";
 
 /**
@@ -10,23 +11,30 @@ export default async function userHandler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	return new Promise<void>(async (resolve, reject) => {
-		try {
-			const {
-				method,
-				body: { bookname, start, end, theme, review, user_id },
-			} = req;
+	try {
+		const {
+			method,
+			body: { bookname, start, end, theme, review, user_id },
+		} = req;
 
-			await executeQuery({
-				query: `INSERT INTO books(bookname, start, end, theme, review, user_id) VALUES(?, ?, ?, ?, ?, ?)`,
-				values: [bookname, start, end, theme, review, user_id],
-			});
+		const addResult = await executeQuery({
+			query: `INSERT INTO books(bookname, start, end, theme, review, user_id) VALUES(?, ?, ?, ?, ?, ?)`,
+			values: [bookname, start, end, theme, review, user_id],
+		});
+		const addedBook = JSON.parse(JSON.stringify(addResult));
 
-			res.status(200).json({ error: null });
-			return resolve();
-		} catch (error) {
-			console.log(error);
-			return reject();
-		}
-	});
+		const book: Book = {
+			book_id: addedBook.insertId,
+			bookname,
+			start,
+			end,
+			theme,
+			review,
+			user_id,
+		};
+
+		return res.status(200).json({ book, error: null });
+	} catch (error) {
+		console.log(error);
+	}
 }
