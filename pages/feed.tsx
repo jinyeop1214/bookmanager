@@ -1,3 +1,4 @@
+import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
 import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -6,9 +7,8 @@ import AddBookBox from "../components/body/bookbox/AddBookBox";
 import BookBox from "../components/body/bookbox/BookBox";
 import Header from "../components/header/Header";
 import { fetchBooks } from "../functions/FetchBooks";
-import { Book, User } from "../Interfaces";
-import { wrapper } from "../store";
-import { getData, selectUser, useAppSelector } from "../store/reducers/user";
+import { Book } from "../Interfaces";
+import { selectUser, useAppSelector } from "../store/reducers/user";
 
 interface FeedProps {
 	books: Array<Book>;
@@ -20,12 +20,36 @@ interface FeedProps {
  */
 const Home: NextPage<FeedProps> = ({ books }) => {
 	const { isLoggedIn, uid, id, nickname } = useAppSelector(selectUser);
+	const { data, isLoading, isError } = useQuery(["books"], async () => {
+		const response = await fetch("/api/books", {
+			method: "get",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+		if (!response.ok) {
+			console.log("feed useQuery error.");
+			throw new Error("feed useQuery error.");
+		}
+		const body: { books: Book[] | undefined } = await response.json();
+		return body.books;
+	});
 	const router = useRouter();
-	const myBooks = books.filter((book) => book.user_id === uid);
 
 	useEffect(() => {
 		if (!isLoggedIn) router.replace(`/`);
 	}, [isLoggedIn, router]);
+
+	// if (!books) return <h1>No Book</h1>;
+	// if (isFetching) console.log("isFetching");
+
+	if (isLoading) return <h1>isLoading...</h1>;
+	if (isError) return <h1>isError</h1>;
+	if (!data) return <h1>No Data</h1>;
+
+	console.log("BOOKS", data);
+
+	const myBooks = data.filter((book) => book.user_id === uid);
 
 	return isLoggedIn ? (
 		<>
@@ -47,7 +71,7 @@ const Home: NextPage<FeedProps> = ({ books }) => {
 				{isLoggedIn && <AddBookBox />}
 				{isLoggedIn && (
 					<div className="books">
-						{books.map((book, _index) => (
+						{data.map((book, _index) => (
 							<BookBox key={book.book_id} book={book} />
 						))}
 					</div>
@@ -64,13 +88,6 @@ const Home: NextPage<FeedProps> = ({ books }) => {
 					font-weight: bold;
 					color: midnightblue;
 				}
-				/* .header {
-					border-bottom: 1px solid darkblue;
-					font-family: inherit;
-					letter-spacing: -0.02em;
-					font-size: 18px;
-					font-weight: bold;
-				} */
 
 				.title {
 					border-bottom: 1px solid darkblue;
@@ -99,29 +116,15 @@ const Home: NextPage<FeedProps> = ({ books }) => {
 export default Home;
 
 export const getServerSideProps: GetServerSideProps = async (_context) => {
-	const books = await fetchBooks();
-	console.log(books);
-	return { props: { books } };
-	// const response = await fetch("http://localhost:3000/api/books", {
-	// 	method: "get",
-	// 	headers: {
-	// 		"Content-Type": "application/json",
-	// 	},
-	// });
-	// const body = await response.json();
-	// return { props: { books: body.books } };
-};
+	const queryClient = new QueryClient();
+	await queryClient.prefetchQuery(["books"], fetchBooks);
 
-// redux
-// export const getServerSideProps: GetServerSideProps =
-// 	wrapper.getServerSideProps((store) => async (_context) => {
-//		console.log(store.getState());
-// 		const response = await fetch("http://localhost:3000/api/books", {
-// 			method: "get",
-// 			headers: {
-// 				"Content-Type": "application/json",
-// 			},
-// 		});
-// 		const body = await response.json();
-// 		return { props: { books: body.books } };
-// 	});
+	// const books = await fetchBooks();
+	// console.log(123, books);
+	// return { props: { books } };
+	return {
+		props: {
+			dehydratedState: dehydrate(queryClient),
+		},
+	};
+};
