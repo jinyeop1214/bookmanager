@@ -13,6 +13,7 @@
 
 -   React
 -   Next.js
+-   React-Query
 -   Redux
 -   Serverless MySQL
 -   TypeScript
