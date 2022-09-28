@@ -1,14 +1,19 @@
+import "dayjs/locale/ko";
+import dayjs from "dayjs";
+
 interface FormatedDate {
 	from: string;
 	to: string;
 }
 
 export const DateFormat = (start: string, end: string): FormatedDate => {
-	const startArr = start.split("T")[0].split("-");
-	const endArr = end.split("T")[0].split("-");
+	dayjs.locale("ko");
+	//요일
+	// console.log("from:", dayjs(start).format("YYYY년 MM월 DD일 dd"));
+	// console.log("to:", dayjs(end).format("YYYY년 MM월 DD일 dd"));
 
 	return {
-		from: `${startArr[0]}년 ${startArr[1]}월 ${startArr[2]}일`,
-		to: `${endArr[0]}년 ${endArr[1]}월 ${endArr[2]}일`,
+		from: dayjs(start).format("YYYY년 MM월 DD일"),
+		to: dayjs(end).format("YYYY년 MM월 DD일"),
 	};
 };

@@ -12,15 +12,9 @@ import { fetchBooks } from "../functions/FetchBooks";
 import { Book } from "../Interfaces";
 import { selectUser, useAppSelector } from "../store/reducers/user";
 
-// interface FeedProps {
-// 	books: Array<Book>;
-// }
-
 /**
  * @param param0
  * @returns
- * // mysql 시간대 안맞는 문제 유.
- * //자동 refetching 시간을 늘릴 필요 유.
  */
 const Home: NextPage = () => {
 	const router = useRouter();
@@ -45,11 +39,11 @@ const Home: NextPage = () => {
 		}
 	);
 
-	console.log("isFetching", isFetching);
+	// console.log("isFetching, isLoading", isFetching, isLoading);
 
 	if (!isLoading && isError) return <DisplayError />;
 
-	console.log(data);
+	// console.log(data);
 
 	return isLoggedIn && data ? (
 		<>
