@@ -10,13 +10,13 @@ import {
 	REGISTER,
 } from "redux-persist";
 import { Context, createWrapper, MakeStore } from "next-redux-wrapper";
+import storage from "redux-persist/lib/storage";
 import reducer from "./reducers";
-import storage from "./storage";
 
 const persistConfig = {
 	key: "root",
 	version: 1,
-	storage: storage,
+	storage,
 };
 
 const persistedReducer = persistReducer(persistConfig, reducer);
@@ -36,7 +36,6 @@ export const store = configureStore({
 				],
 			},
 		}),
-	devTools: process.env.NODE_ENV !== "production",
 });
 
 const setupStore = (context: Context): EnhancedStore => store;

@@ -17,11 +17,10 @@ const reducer = (
 	action: AnyAction
 ) => {
 	if (action.type === HYDRATE) {
-		const nextState = {
+		return {
 			...action.payload,
 			...state,
 		};
-		return nextState;
 	} else {
 		return appReducer(state, action);
 	}
