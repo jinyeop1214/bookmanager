@@ -15,20 +15,17 @@ export const userSlice = createSlice({
 	name: "loggedUser",
 	initialState,
 	reducers: {
-		getData: (state) => state,
-		logIn: (_state, action: PayloadAction<UserPayload>) => {
-			return {
-				isLoggedIn: true,
-				uid: action.payload.uid,
-				id: action.payload.id,
-				nickname: action.payload.nickname,
-			};
-		},
+		logIn: (state, action: PayloadAction<UserPayload>) => ({
+			isLoggedIn: true,
+			uid: action.payload.uid,
+			id: action.payload.id,
+			nickname: action.payload.nickname,
+		}),
 		logOut: () => initialState,
 	},
 });
 
-export const { getData, logIn, logOut } = userSlice.actions;
-export const selectUser = (state: AppState) => state.userSlice;
+export const { logIn, logOut } = userSlice.actions;
+export const selectUser = (state: AppState) => state.user;
 export const useAppSelector: TypedUseSelectorHook<AppState> = useSelector;
-export default userSlice.reducer;
+export default userSlice;

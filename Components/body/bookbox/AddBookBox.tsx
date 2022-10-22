@@ -38,8 +38,6 @@ const AddBookBox = () => {
 				throw new Error("addBookMutation Error.");
 			},
 			onSuccess: (data, _variables, _context) => {
-				console.log("addBookData", data);
-
 				setBookname("");
 				setStart("");
 				setEnd("");
@@ -47,7 +45,7 @@ const AddBookBox = () => {
 				setReview("");
 
 				//Updates from Mutation Responses
-				queryClient.setQueryData(
+				queryClient.setQueriesData(
 					["books"],
 					(prev: Book[] | undefined): Book[] | undefined => [
 						...(prev ?? []),

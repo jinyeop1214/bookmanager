@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { useDispatch } from "react-redux";
@@ -14,10 +13,16 @@ const Header = () => {
 		router.replace(`/`);
 	};
 
+	const handleMyPage = () => {
+		router.push(`/mypage/${uid}`);
+	};
+
 	return (
 		<div className="header">
 			<div className="bar">
-				<button className="btn-nickname">{nickname}</button>
+				<button className="btn-nickname" onClick={handleMyPage}>
+					{nickname}
+				</button>
 				<span className="border-line"></span>
 				<button className="btn" onClick={handleLogOut}>
 					log out
@@ -71,6 +76,7 @@ const Header = () => {
 						line-height: 1.75em;
 						border: none;
 						letter-spacing: -0.05em;
+						cursor: pointer;
 					}
 
 					.btn {

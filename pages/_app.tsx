@@ -17,7 +17,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 		<QueryClientProvider client={queryClient}>
 			<Hydrate state={pageProps.dehydratedState}>
 				<Provider store={store}>
-					<PersistGate persistor={persistor} loading={null}>
+					<PersistGate
+						persistor={persistor}
+						loading={<div>loading</div>}
+					>
 						<Component {...pageProps} />
 					</PersistGate>
 				</Provider>

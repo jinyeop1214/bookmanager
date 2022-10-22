@@ -6,8 +6,8 @@ export default async function userHandler(
 	res: NextApiResponse
 ) {
 	const {
-		query: { id },
 		method,
+		query: { id },
 	} = req;
 	try {
 		switch (method) {

@@ -12,10 +12,6 @@ import { fetchBooks } from "../functions/FetchBooks";
 import { Book } from "../Interfaces";
 import { selectUser, useAppSelector } from "../store/reducers/user";
 
-/**
- * @param param0
- * @returns
- */
 const Home: NextPage = () => {
 	const router = useRouter();
 	const { isLoggedIn, uid, id, nickname } = useAppSelector(selectUser);
@@ -39,11 +35,9 @@ const Home: NextPage = () => {
 		}
 	);
 
-	// console.log("isFetching, isLoading", isFetching, isLoading);
-
 	if (!isLoading && isError) return <DisplayError />;
 
-	// console.log(data);
+	console.log("isLoading, isFetching, data", isLoading, isFetching, data);
 
 	return isLoggedIn && data ? (
 		<>
@@ -113,9 +107,6 @@ export const getServerSideProps: GetServerSideProps = async (_context) => {
 	const queryClient = new QueryClient();
 	await queryClient.prefetchQuery(["books"], fetchBooks);
 
-	// const books = await fetchBooks();
-	// console.log(123, books);
-	// return { props: { books } };
 	return {
 		props: {
 			dehydratedState: dehydrate(queryClient),

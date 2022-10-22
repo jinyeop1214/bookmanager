@@ -32,10 +32,8 @@ const OpenedBox = (props: OpenedBoxProps) => {
 				throw new Error("deleteBookMutation Error.");
 			},
 			onSuccess: (_data, variables, _context) => {
-				console.log("variables", variables);
-
 				//Updates from Mutation Responses
-				queryClient.setQueryData(
+				queryClient.setQueriesData(
 					["books"],
 					(prev: Book[] | undefined): Book[] | undefined =>
 						prev?.filter((book) => book.book_id !== variables)

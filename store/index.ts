@@ -10,8 +10,8 @@ import {
 	REGISTER,
 } from "redux-persist";
 import { Context, createWrapper, MakeStore } from "next-redux-wrapper";
+import { rootReducer } from "./reducers";
 import storage from "redux-persist/lib/storage";
-import reducer from "./reducers";
 
 const persistConfig = {
 	key: "root",
@@ -19,7 +19,7 @@ const persistConfig = {
 	storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, reducer);
+export const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
 	reducer: persistedReducer,
@@ -40,7 +40,15 @@ export const store = configureStore({
 
 const setupStore = (context: Context): EnhancedStore => store;
 
-const makeStore: MakeStore<any> = (context: Context) => setupStore(context);
+const makeStore: MakeStore<any> = (context: Context) => {
+	const isServer = typeof window == "undefined";
+
+	if (isServer) {
+		return configureStore({ reducer: rootReducer });
+	} else {
+		return setupStore(context);
+	}
+};
 
 export const persistor = persistStore(store);
 

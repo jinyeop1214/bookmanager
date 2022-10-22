@@ -3,28 +3,28 @@ import { HYDRATE } from "next-redux-wrapper";
 import userSlice from "./user";
 import { User } from "../../Interfaces";
 
-const appReducer = combineReducers({
-	userSlice,
-});
+export interface ReducerStates {
+	user: User;
+}
 
-/**
- * @param state
- * @param action
- * @returns
- */
-const reducer = (
-	state: CombinedState<{ userSlice: User }> | undefined,
+export const rootReducer = (
+	state: ReducerStates | undefined,
 	action: AnyAction
-) => {
+): CombinedState<ReducerStates> => {
 	if (action.type === HYDRATE) {
+		// console.log({
+		// 	...action.payload,
+		// 	user: state?.user,
+		// });
 		return {
 			...action.payload,
-			...state,
 		};
 	} else {
-		return appReducer(state, action);
+		const combinedReducer = combineReducers({
+			user: userSlice.reducer,
+		});
+		return combinedReducer(state, action);
 	}
 };
 
-export default reducer;
-export type AppState = ReturnType<typeof appReducer>;
+export type AppState = ReturnType<typeof rootReducer>;

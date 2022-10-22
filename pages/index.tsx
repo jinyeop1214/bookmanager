@@ -40,7 +40,6 @@ const Sign: NextPage = () => {
 				throw new Error("logInMutation Error.");
 			},
 			onSuccess: (data, _variables, _context) => {
-				console.log("data", data);
 				if (data.error) {
 					switch (data.error) {
 						case "ID":
@@ -80,7 +79,6 @@ const Sign: NextPage = () => {
 				throw new Error("signUpMutation Error.");
 			},
 			onSuccess: (data, _variables, _context) => {
-				console.log("data", data);
 				if (data.error) {
 					switch (data.error) {
 						case "ID":
