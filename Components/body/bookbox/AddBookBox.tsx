@@ -7,7 +7,7 @@ import { selectUser, useAppSelector } from "../../../store/reducers/user";
  * @returns
  */
 const AddBookBox = () => {
-	const { uid, isLoggedIn, id, nickname } = useAppSelector(selectUser);
+	const { uid } = useAppSelector(selectUser);
 	const [bookname, setBookname] = useState<string>("");
 	const [start, setStart] = useState<string>("");
 	const [end, setEnd] = useState<string>("");
@@ -44,19 +44,13 @@ const AddBookBox = () => {
 				setTheme("");
 				setReview("");
 
-				//Updates from Mutation Responses
-				queryClient.setQueriesData(
+				queryClient.setQueryData(
 					["books"],
 					(prev: Book[] | undefined): Book[] | undefined => [
 						...(prev ?? []),
 						data.book,
 					]
 				);
-
-				//Invalidation from Mutations
-				// queryClient.invalidateQueries(["books"]);
-
-				//=>no need router.replace(/feed);
 			},
 		}
 	);
@@ -193,7 +187,7 @@ const AddBookBox = () => {
 
 				.bookname {
 					display: block;
-					width: 90%;
+					width: 80%;
 					font-size: 20px;
 					padding: 7px;
 					box-sizing: border-box;
@@ -231,6 +225,7 @@ const AddBookBox = () => {
 					letter-spacing: -0.02em;
 					font-size: 14px;
 					padding: 13px 5px 3px 5px;
+					color: gray;
 				}
 
 				.description-bookname {
@@ -238,6 +233,7 @@ const AddBookBox = () => {
 					letter-spacing: -0.02em;
 					font-size: 14px;
 					padding: 3px 5px 3px 5px;
+					color: gray;
 				}
 
 				.review {

@@ -25,10 +25,10 @@ const BookBox = ({ book }: BookBoxProps) => {
 	const toggleOpen = () => setOpen((prev) => !prev);
 	const toggleUpdate = () => setUpdate((prev) => !prev);
 
-	return !open ? ( //not open
+	return !open ? ( //닫힘
 		<ClosedBookBox book={newBook} toggleOpen={toggleOpen} />
-	) : //open
-	!update ? ( //not update
+	) : //열림
+	!update ? ( //수정
 		<OpenedBox
 			book={newBook}
 			toggleOpen={toggleOpen}

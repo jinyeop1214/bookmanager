@@ -184,8 +184,10 @@ const Loading = ({ loading }: LoadingProps) => {
 				}
 
 				.loading {
-					position: absolute;
+					position: fixed;
 					background-color: white;
+					top: 0%;
+					right: 0%;
 					width: 100vw;
 					height: 100vh;
 					display: flex;

@@ -6,7 +6,7 @@ import { logOut, selectUser, useAppSelector } from "../../store/reducers/user";
 const Header = () => {
 	const router = useRouter();
 	const dispatch = useDispatch();
-	const { isLoggedIn, uid, id, nickname } = useAppSelector(selectUser);
+	const { uid, nickname } = useAppSelector(selectUser);
 
 	const handleLogOut = () => {
 		dispatch(logOut());
@@ -14,7 +14,12 @@ const Header = () => {
 	};
 
 	const handleMyPage = () => {
-		router.push(`/mypage/${uid}`);
+		if (router.pathname.slice(0, 8) !== `/mypage/`)
+			router.push(`/mypage/${uid}`);
+	};
+
+	const handleHomePage = () => {
+		if (router.pathname !== "/feed") router.push(`/feed`);
 	};
 
 	return (
@@ -28,7 +33,11 @@ const Header = () => {
 					log out
 				</button>
 			</div>
-			<div className="logo">Book Manager</div>
+			<div className="logo">
+				<span className="logo-btn" onClick={handleHomePage}>
+					Book Manager
+				</span>
+			</div>
 			<style jsx>
 				{`
 					a {
@@ -42,12 +51,15 @@ const Header = () => {
 					}
 
 					.logo {
-						color: midnightblue;
-						margin-top: 10px;
 						text-align: center;
+					}
+
+					.logo-btn {
+						color: midnightblue;
 						font-size: 32px;
 						font-weight: bold;
 						font-family: inherit;
+						cursor: pointer;
 					}
 
 					.bar {
@@ -69,7 +81,7 @@ const Header = () => {
 						background-color: white;
 						text-decoration: none;
 						color: midnightblue;
-						font-size: 16.5px;
+						font-size: 18px;
 						font-weight: bold;
 						font-family: inherit;
 						padding: 0px;
@@ -84,7 +96,7 @@ const Header = () => {
 						background-color: white;
 						text-decoration: none;
 						color: midnightblue;
-						font-size: 16.5px;
+						font-size: 18px;
 						font-weight: bold;
 						font-family: inherit;
 						padding: 0px;

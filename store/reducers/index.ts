@@ -12,10 +12,6 @@ export const rootReducer = (
 	action: AnyAction
 ): CombinedState<ReducerStates> => {
 	if (action.type === HYDRATE) {
-		// console.log({
-		// 	...action.payload,
-		// 	user: state?.user,
-		// });
 		return {
 			...action.payload,
 		};

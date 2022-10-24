@@ -14,7 +14,7 @@ import { selectUser, useAppSelector } from "../store/reducers/user";
 
 const Home: NextPage = () => {
 	const router = useRouter();
-	const { isLoggedIn, uid, id, nickname } = useAppSelector(selectUser);
+	const { isLoggedIn, uid } = useAppSelector(selectUser);
 
 	useEffect(() => {
 		if (!isLoggedIn) router.replace(`/`);
@@ -37,11 +37,8 @@ const Home: NextPage = () => {
 
 	if (!isLoading && isError) return <DisplayError />;
 
-	console.log("isLoading, isFetching, data", isLoading, isFetching, data);
-
-	return isLoggedIn && data ? (
+	return isLoggedIn ? (
 		<>
-			<Loading loading={isLoading} />
 			<Head>
 				<title>Book Manager</title>
 				<meta
@@ -51,20 +48,23 @@ const Home: NextPage = () => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<Header />
-			<div className="container">
-				<div className="title">
-					<span className="registered_book">
-						내가 등록한 책:{" "}
-						{data.filter((book) => book.user_id === uid).length}권
-					</span>
+			{data && (
+				<div className="container">
+					<div className="title">
+						<span className="registered_book">
+							내가 등록한 책:{" "}
+							{data.filter((book) => book.user_id === uid).length}
+							권
+						</span>
+					</div>
+					<AddBookBox />
+					<div className="books">
+						{data.map((book, _index) => (
+							<BookBox key={book.book_id} book={book} />
+						))}
+					</div>
 				</div>
-				<AddBookBox />
-				<div className="books">
-					{data.map((book, _index) => (
-						<BookBox key={book.book_id} book={book} />
-					))}
-				</div>
-			</div>
+			)}
 			<style jsx>{`
 				.body {
 					text-align: center;
@@ -88,7 +88,7 @@ const Home: NextPage = () => {
 
 				.books {
 					margin: 0px;
-					margin-left: 45px;
+					margin-left: 25px;
 				}
 
 				.registered_book {

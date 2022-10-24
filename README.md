@@ -20,8 +20,8 @@
 
 ## Goal
 
-- Next.js의 SSR, React-Query의 server state 관리에 대해 공부
-- Next.js, React-Query, Redux를 활용한 프로젝트 구조에 대해 고민
+-   Next.js의 SSR, React-Query의 server state 관리에 대해 공부
+-   Next.js, React-Query, Redux를 활용한 프로젝트 구조에 대해 고민
 
 ## Description
 
@@ -36,6 +36,7 @@
 2. 양식에 따라 독서 기록을 적은 뒤 등록
 3. 등록한 자신의 독서 기록에 대해 수정 및 삭제
 4. 모든 회원의 독서 기록을 함께 공유
+5. 마이페이지에서 닉네임 수정 및 자신만의 독서 기록 확인
 
 #### Additional Features
 
@@ -50,7 +51,4 @@
 
 ### Needs for Improvement
 
-1. 로그인한 유저의 마이페이지 화면
-2. 자신의 독서 기록만을 보기 위한 필터링
-3. 각 독서 기록에 등록한 유저 정보 기입
-4. ..
+1. ..

@@ -1,4 +1,3 @@
-// import { QueryCache } from "@tanstack/react-query";
 import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
 import { GetServerSideProps, NextPage } from "next";
 import React, { useEffect } from "react";
@@ -8,11 +7,14 @@ import { Book } from "../../Interfaces";
 import { useRouter } from "next/router";
 import DisplayError from "../../components/exceptions/DisplayError";
 import Loading from "../../components/exceptions/Loading";
-import { DateFormat } from "../../functions/DateFormat";
+import Head from "next/head";
+import Header from "../../components/header/Header";
+import BookBox from "../../components/body/bookbox/BookBox";
+import UserInfo from "../../components/body/user/UserInfo";
 
 const mypage: NextPage = () => {
 	const router = useRouter();
-	const { uid, isLoggedIn, id, nickname } = useAppSelector(selectUser);
+	const { uid, isLoggedIn, nickname } = useAppSelector(selectUser);
 
 	useEffect(() => {
 		if (!isLoggedIn) router.replace(`/`);
@@ -28,35 +30,62 @@ const mypage: NextPage = () => {
 				},
 			});
 			if (!response.ok) throw new Error("mypage useQuery error.");
-			const body: { books: Book[] | undefined } = await response.json();
+			const body: { books: Book[] } = await response.json();
 			return body.books;
 		}
 	);
 
 	if (!isLoading && isError) return <DisplayError />;
 
-	console.log("isLoading, isFetching, data", isLoading, isFetching, data);
-
-	return isLoggedIn && data ? (
+	return isLoggedIn ? (
 		<>
-			<Loading loading={isLoading} />
-			{data.map((book) => {
-				const { from, to } = DateFormat(book.start, book.end);
-				return (
-					<div key={book.book_id}>
-						<div>
-							<div>{book.book_id}</div>
-							<div>{book.bookname}</div>
-							<div>{from}</div>
-							<div>{to}</div>
-							<div>{book.review}</div>
-							<div>{book.theme}</div>
-							<div>{book.user_id}</div>
-						</div>
-						<br />
+			<Head>
+				<title>Book Manager - {nickname}'s page</title>
+				<link rel="icon" href="/favicon.ico" />
+			</Head>
+			<Header />
+			{data && (
+				<div className="container">
+					<UserInfo books={data.length} />
+					<div className="books">
+						{data.map((book, _index) => (
+							<BookBox key={book.book_id} book={book} />
+						))}
 					</div>
-				);
-			})}
+				</div>
+			)}
+			<style jsx>{`
+				.body {
+					text-align: center;
+					padding: 100px;
+					font-family: inherit;
+					letter-spacing: -0.02em;
+					line-height: 280px;
+					font-size: 40px;
+					font-weight: bold;
+					color: midnightblue;
+				}
+
+				.title {
+					border-bottom: 1px solid darkblue;
+					margin: 5px;
+				}
+				.container {
+					margin: 100px;
+					margin-top: 50px;
+				}
+
+				.books {
+					margin: 0px;
+					margin-left: 25px;
+				}
+
+				.registered_book {
+					font-size: 18px;
+					font-family: inherit;
+					letter-spacing: -0.02em;
+				}
+			`}</style>
 		</>
 	) : null;
 };

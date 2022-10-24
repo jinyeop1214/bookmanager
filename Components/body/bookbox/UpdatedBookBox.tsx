@@ -42,11 +42,10 @@ const UpdatedBox = (props: UpdatedBoxProps) => {
 				console.log(error);
 				throw new Error("updateBookMutation Error.");
 			},
-			onSuccess: (data, variables, _context) => {
+			onSuccess: (_data, variables, _context) => {
 				toggleUpdate();
 				handleSetNewBook({ ...props.book, ...variables }); //?
 
-				//Updates from Mutation Responses
 				queryClient.setQueriesData(
 					["books"],
 					(prev: Book[] | undefined): Book[] | undefined =>
@@ -56,9 +55,6 @@ const UpdatedBox = (props: UpdatedBoxProps) => {
 								: book
 						)
 				);
-
-				//Invalidation from Mutations
-				// queryClient.invalidateQueries(["books"]);
 			},
 		}
 	);

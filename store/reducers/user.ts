@@ -22,10 +22,17 @@ export const userSlice = createSlice({
 			nickname: action.payload.nickname,
 		}),
 		logOut: () => initialState,
+		modifyUser: (
+			state,
+			action: PayloadAction<Omit<UserPayload, "id" | "uid">>
+		) => ({
+			...state,
+			...action.payload,
+		}),
 	},
 });
 
-export const { logIn, logOut } = userSlice.actions;
+export const { logIn, logOut, modifyUser } = userSlice.actions;
 export const selectUser = (state: AppState) => state.user;
 export const useAppSelector: TypedUseSelectorHook<AppState> = useSelector;
 export default userSlice;

@@ -204,7 +204,7 @@ const Sign: NextPage = () => {
 				<style jsx>{`
 					.container {
 						max-width: 350px;
-						margin: 80px auto;
+						margin: 150px auto;
 						padding: 20px 16px 15px;
 						background-color: white;
 						box-sizing: border-box;
