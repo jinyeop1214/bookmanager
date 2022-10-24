@@ -13,8 +13,8 @@
 
 -   React
 -   Next.js
--   React-Query
--   Redux
+-   React Query
+-   Redux Toolkit
 -   Serverless MySQL
 -   TypeScript
 
