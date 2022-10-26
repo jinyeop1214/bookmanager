@@ -43,7 +43,7 @@ const Loading = ({ loading }: LoadingProps) => {
 					margin: 0 auto;
 					width: 15%;
 					height: 15%;
-					background-color: #04b494;
+					background-color: midnightblue;
 					border-radius: 100%;
 					-webkit-animation: sk-circleFadeDelay 1.2s infinite
 						ease-in-out both;
@@ -177,10 +177,11 @@ const Loading = ({ loading }: LoadingProps) => {
 				}
 
 				.hidden {
-					transition: opacity 0.3s linear,
+					transition: opacity 0.3s linear, visibility 0.3s linear,
 						z-index 0.3s cubic-bezier(1, 0, 1, 0);
 					opacity: 0;
 					z-index: -1;
+					visibility: hidden;
 				}
 
 				.loading {
