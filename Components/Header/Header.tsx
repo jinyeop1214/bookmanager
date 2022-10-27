@@ -24,33 +24,29 @@ const Header = () => {
 
 	return (
 		<div className="header">
-			<div className="bar">
-				<button className="btn-nickname" onClick={handleMyPage}>
-					{nickname}
-				</button>
+			<div></div>
+			<div>
+				<span className="logo-btn" onClick={handleHomePage}>
+					Book Manager
+				</span>
+			</div>
+			<div>
+				<span className="btn-mypage" onClick={handleMyPage}>
+					<img className="icon" src="/user.png" />
+					<span className="text">My Page</span>
+				</span>
 				<span className="border-line"></span>
 				<button className="btn" onClick={handleLogOut}>
 					log out
 				</button>
 			</div>
-			<div className="logo">
-				<span className="logo-btn" onClick={handleHomePage}>
-					Book Manager
-				</span>
-			</div>
 			<style jsx>
 				{`
-					a {
-						text-decoration: none;
-						color: midnightblue;
-						font-size: 17px;
-						font-weight: bold;
-						font-family: inherit;
-						line-height: 1.75em;
-						letter-spacing: -0.05em;
-					}
-
-					.logo {
+					.header {
+						display: grid;
+						grid-auto-flow: column;
+						grid-template-columns: 1fr 5fr 1fr;
+						padding: 30px 20px 20px 20px;
 						text-align: center;
 					}
 
@@ -62,33 +58,23 @@ const Header = () => {
 						cursor: pointer;
 					}
 
-					.bar {
-						display: inline-block;
-					}
-
-					.header {
-						height: 100px;
-						padding: 20px;
-						padding-left: 30px;
-						padding-right: 30px;
-						text-align: end;
-						border-top: 1px solid darkblue;
-						border-bottom: 2px solid darkblue;
-					}
-
-					.btn-nickname {
-						display: inline-block;
-						background-color: white;
-						text-decoration: none;
+					.btn-mypage {
 						color: midnightblue;
 						font-size: 18px;
-						font-weight: bold;
-						font-family: inherit;
-						padding: 0px;
 						line-height: 1.75em;
-						border: none;
 						letter-spacing: -0.05em;
 						cursor: pointer;
+					}
+
+					.icon {
+						vertical-align: middle;
+						width: 38px;
+						display: inline-block;
+					}
+
+					.text {
+						margin-left: 10px;
+						font-weight: 600;
 					}
 
 					.btn {
@@ -97,7 +83,7 @@ const Header = () => {
 						text-decoration: none;
 						color: midnightblue;
 						font-size: 18px;
-						font-weight: bold;
+						font-weight: 600;
 						font-family: inherit;
 						padding: 0px;
 						line-height: 1.75em;

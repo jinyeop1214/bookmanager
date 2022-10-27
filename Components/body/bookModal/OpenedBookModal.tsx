@@ -1,18 +1,18 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import React from "react";
+import React, { MouseEventHandler } from "react";
 import { DateFormat } from "../../../functions/DateFormat";
 import { Book, UserPayload } from "../../../Interfaces";
 import { selectUser, useAppSelector } from "../../../store/reducers/user";
 import DisplayError from "../../exceptions/DisplayError";
 import Loading from "../../exceptions/Loading";
 
-interface OpenedBoxProps {
+interface OpenedBookModalProps {
 	book: Book;
 	toggleOpen: () => void;
 	toggleUpdate: () => void;
 }
 
-const OpenedBox = (props: OpenedBoxProps) => {
+const OpenedBookModal = (props: OpenedBookModalProps) => {
 	const { uid } = useAppSelector(selectUser);
 	const { book_id, bookname, start, end, theme, review, user_id } =
 		props.book;
@@ -72,37 +72,76 @@ const OpenedBox = (props: OpenedBoxProps) => {
 		}
 	};
 
+	const handleToggleOpen: MouseEventHandler<HTMLDivElement> = (e) => {
+		if (e.target == e.currentTarget) toggleOpen();
+	};
+
+	const handleUpdateBtn: MouseEventHandler<HTMLButtonElement> = (e) => {
+		e.stopPropagation();
+		toggleUpdate();
+	};
+
+	const handleDeleteBtn: MouseEventHandler<HTMLButtonElement> = (e) => {
+		e.stopPropagation();
+		handleDeleteBook();
+	};
+
+	const handleCloseBtn: MouseEventHandler<HTMLButtonElement> = (e) => {
+		e.stopPropagation();
+		toggleOpen();
+	};
+
 	return (
 		<>
 			<Loading loading={isLoading} />
-			<div className="box">
-				<div className="bookname">{bookname}</div>
-				<div className="period">
-					{from} ~ {to}
-				</div>
-				<div className="theme">{theme}</div>
-				{data && <div className="user">{data.nickname}</div>}
-				<p className="review">&nbsp;{review}</p>
-				<div className="btn-wrapper">
-					<span></span>
-					<button className="update-btn" onClick={toggleUpdate}>
-						수정
-					</button>
-					<button className="delete-btn" onClick={handleDeleteBook}>
-						삭제
-					</button>
-					<button className="close-btn" onClick={toggleOpen}>
-						접기
-					</button>
+			<div className="modal" onClick={handleToggleOpen}>
+				<div className="box">
+					<div className="bookname">{bookname}</div>
+					<div className="period">
+						{from} ~ {to}
+					</div>
+					<div className="theme">{theme}</div>
+					{data && <div className="user">{data.nickname}</div>}
+					<p className="review">&nbsp;{review}</p>
+					<div className="btn-wrapper">
+						<span></span>
+						<button
+							className="update-btn"
+							onClick={handleUpdateBtn}
+						>
+							수정
+						</button>
+						<button
+							className="delete-btn"
+							onClick={handleDeleteBtn}
+						>
+							삭제
+						</button>
+						<button className="close-btn" onClick={handleCloseBtn}>
+							닫기
+						</button>
+					</div>
 				</div>
 				<style jsx>
 					{`
+						.modal {
+							z-index: 5;
+							position: fixed;
+							top: 0;
+							right: 0;
+							bottom: 0;
+							left: 0;
+							background: rgba(0, 0, 0, 0.6);
+						}
+
 						.box {
-							display: inline-table;
-							margin: 30px 0px;
-							margin-right: 45px;
-							width: 300px;
-							padding: 20px 20px 15px 20px;
+							display: grid;
+							grid-auto-flow: row;
+							grid-template-rows: 2fr 1fr 1fr 1fr 10fr 1fr;
+							margin: 10% auto;
+							width: 35%;
+							height: 65%;
+							padding: 30px;
 							background-color: white;
 							box-sizing: border-box;
 							border-radius: 10px;
@@ -111,6 +150,7 @@ const OpenedBox = (props: OpenedBoxProps) => {
 						}
 
 						.bookname {
+							text-align: center;
 							font-family: inherit;
 							font-size: 25px;
 							font-weight: 500;
@@ -151,7 +191,7 @@ const OpenedBox = (props: OpenedBoxProps) => {
 						.btn-wrapper {
 							display: grid;
 							grid-auto-flow: column;
-							grid-template-columns: 1fr 1fr 1fr 1fr;
+							grid-template-columns: 2fr 1fr 1fr 1fr;
 							margin-top: 15px;
 						}
 
@@ -221,4 +261,4 @@ const OpenedBox = (props: OpenedBoxProps) => {
 	);
 };
 
-export default OpenedBox;
+export default OpenedBookModal;

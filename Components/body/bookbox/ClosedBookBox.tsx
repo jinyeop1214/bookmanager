@@ -26,7 +26,7 @@ const ClosedBookBox = (props: ClosedBookBoxProps) => {
 			<div className="open-button-wrapper">
 				<span></span>
 				<button className="open-button" onClick={toggleOpen}>
-					펼치기
+					열기
 				</button>
 			</div>
 			<style jsx>{`
