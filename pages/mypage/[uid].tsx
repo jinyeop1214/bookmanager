@@ -9,7 +9,7 @@ import DisplayError from "../../components/exceptions/DisplayError";
 import Loading from "../../components/exceptions/Loading";
 import Head from "next/head";
 import Header from "../../components/header/Header";
-import BookBox from "../../components/body/bookbox/BookBox";
+import BookBox from "../../components/body/bookBox/BookBox";
 import UserInfo from "../../components/body/user/UserInfo";
 
 const mypage: NextPage = () => {
