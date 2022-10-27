@@ -6,7 +6,7 @@
 
 ## Period
 
-2022.08.23 ~
+2022.08.23 ~ 2022.10.27 (ing)
 <br/>
 
 ## Tech Stack
@@ -15,7 +15,7 @@
 -   Next.js
 -   React Query
 -   Redux Toolkit
--   Serverless MySQL
+-   MySQL
 -   TypeScript
 
 ## Goal
@@ -25,7 +25,7 @@
 
 ## Description
 
-로그인이 필요한 서비스로, 회원간에 독서 정보와 후기를 기록하고 공유합니다.
+로그인이 필요한 서비스로, 회원간에 독후감을 기록하고 공유합니다.
 <br/>
 
 ### Features
@@ -44,11 +44,12 @@
 2. 양식의 모든 칸을 채웠을 때에만 버튼 활성화
 
 #### Sample Photos
+<img src="https://user-images.githubusercontent.com/45283544/198202648-3830f8a4-2fd9-472b-a919-89179193603d.png" width=45% /> <img src="https://user-images.githubusercontent.com/45283544/198202689-66f1ab06-2b7d-4414-8167-2270d0d218e4.png" width=45% />
+<img src="https://user-images.githubusercontent.com/45283544/198202520-e49fb342-e85b-444c-822a-c780a97e41f7.png" width=30% /> <img src="https://user-images.githubusercontent.com/45283544/198202673-8a2a9d01-3d43-4721-b680-e323e163fa5c.png" width=30% /> <img src="https://user-images.githubusercontent.com/45283544/198202683-fdc9b41b-ff81-4b57-9105-0b6598a39856.png" width=27.4% />
 
-<img src="https://user-images.githubusercontent.com/45283544/192719450-3f836df9-6f07-47a2-9b4b-8878ad50afb3.png" width=50% />
-
-<img src="https://user-images.githubusercontent.com/45283544/192720091-6a6b598e-5787-40ce-95ec-5960d36fed17.png" width=30% /> <img src="https://user-images.githubusercontent.com/45283544/192720104-c5ce7ace-4006-4bff-9169-67e42291e99a.png" width=20% />
+<br/>
 
 ### Needs for Improvement
 
-1. ..
+1. 반응형 웹 디자인
+2. ..
