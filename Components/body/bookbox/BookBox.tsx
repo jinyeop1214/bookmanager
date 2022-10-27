@@ -1,10 +1,8 @@
-import React, { FC, useState } from "react";
+import React, { useState } from "react";
 import { Book } from "../../../Interfaces";
 import OpenedBookModal from "../bookModal/OpenedBookModal";
 import UpdatedBookModal from "../bookModal/UpdatedBookModal";
 import ClosedBookBox from "./ClosedBookBox";
-// import OpenedBox from "./OpenedBookBox";
-// import UpdatedBox from "./UpdatedBookBox";
 
 interface BookBoxProps {
 	book: Book;

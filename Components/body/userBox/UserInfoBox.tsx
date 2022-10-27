@@ -8,11 +8,11 @@ import {
 	modifyUser,
 } from "../../../store/reducers/user";
 
-interface UserInfoProps {
+interface UserInfoBoxProps {
 	books: number;
 }
 
-const UserInfo = ({ books }: UserInfoProps) => {
+const UserInfoBox = ({ books }: UserInfoBoxProps) => {
 	const { uid, id, nickname } = useAppSelector(selectUser);
 	const [name, setName] = useState<string>(nickname as string);
 	const isDisable = name === "" || name === nickname;
@@ -146,4 +146,4 @@ const UserInfo = ({ books }: UserInfoProps) => {
 	);
 };
 
-export default UserInfo;
+export default UserInfoBox;

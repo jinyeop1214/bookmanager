@@ -14,7 +14,7 @@ import { selectUser, useAppSelector } from "../store/reducers/user";
 
 const Home: NextPage = () => {
 	const router = useRouter();
-	const { isLoggedIn, uid } = useAppSelector(selectUser);
+	const { isLoggedIn, uid, nickname } = useAppSelector(selectUser);
 
 	useEffect(() => {
 		if (!isLoggedIn) router.replace(`/`);
@@ -52,7 +52,11 @@ const Home: NextPage = () => {
 				<div className="container">
 					<div className="title">
 						<span className="registered_book">
-							내가 등록한 책:{" "}
+							<span className="info">닉네임:</span> {nickname}
+						</span>
+						<span className="border-line"></span>
+						<span className="registered_book">
+							<span className="info">내가 등록한 책:</span>{" "}
 							{data.filter((book) => book.user_id === uid).length}
 							권
 						</span>
@@ -81,9 +85,14 @@ const Home: NextPage = () => {
 					border-bottom: 1px solid darkblue;
 					margin: 5px;
 				}
+
+				.border-line {
+					border-right: 1px solid #dadde1;
+					margin: 10px;
+				}
+
 				.container {
-					margin: 100px;
-					margin-top: 50px;
+					margin: 70px 100px 100px 100px;
 				}
 
 				.books {
@@ -95,6 +104,11 @@ const Home: NextPage = () => {
 					font-size: 18px;
 					font-family: inherit;
 					letter-spacing: -0.02em;
+				}
+
+				.info {
+					color: gray;
+					font-size: 16px;
 				}
 			`}</style>
 		</>

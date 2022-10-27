@@ -210,6 +210,7 @@ const UpdatedBookModal = (props: UpdatedBookModalProps) => {
 					}
 
 					.theme {
+						width: 50%;
 						font-size: 15px;
 						padding: 3px;
 						box-sizing: border-box;

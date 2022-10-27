@@ -6,11 +6,10 @@ import { selectUser, useAppSelector } from "../../store/reducers/user";
 import { Book } from "../../Interfaces";
 import { useRouter } from "next/router";
 import DisplayError from "../../components/exceptions/DisplayError";
-import Loading from "../../components/exceptions/Loading";
 import Head from "next/head";
 import Header from "../../components/header/Header";
 import BookBox from "../../components/body/bookBox/BookBox";
-import UserInfo from "../../components/body/user/UserInfo";
+import UserInfoBox from "../../components/body/userBox/UserInfoBox";
 
 const mypage: NextPage = () => {
 	const router = useRouter();
@@ -46,7 +45,7 @@ const mypage: NextPage = () => {
 			<Header />
 			{data && (
 				<div className="container">
-					<UserInfo books={data.length} />
+					<UserInfoBox books={data.length} />
 					<div className="books">
 						{data.map((book, _index) => (
 							<BookBox key={book.book_id} book={book} />
