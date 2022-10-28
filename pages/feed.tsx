@@ -1,8 +1,13 @@
-import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
+import {
+	dehydrate,
+	QueryClient,
+	useInfiniteQuery,
+} from "@tanstack/react-query";
 import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
 import AddBookBox from "../components/body/bookBox/AddBookBox";
 import BookBox from "../components/body/bookBox/BookBox";
 import DisplayError from "../components/exceptions/DisplayError";
@@ -15,30 +20,45 @@ import { selectUser, useAppSelector } from "../store/reducers/user";
 const Home: NextPage = () => {
 	const router = useRouter();
 	const { isLoggedIn, uid, nickname } = useAppSelector(selectUser);
-
-	useEffect(() => {
-		if (!isLoggedIn) router.replace(`/`);
-	}, [isLoggedIn, router]);
-
-	const { data, isLoading, isError, isFetching } = useQuery(
+	const [ref, inView] = useInView({ threshold: 0.5, triggerOnce: true });
+	const {
+		data,
+		isLoading,
+		isError,
+		isFetching,
+		isFetchingNextPage,
+		fetchNextPage,
+		hasNextPage,
+	} = useInfiniteQuery(
 		["books"],
-		async () => {
-			const response = await fetch("/api/books", {
+		async ({ pageParam = 0 }) => {
+			const response = await fetch(`/api/books?cursor=${pageParam}`, {
 				method: "get",
 				headers: {
 					"Content-Type": "application/json",
 				},
 			});
 			if (!response.ok) throw new Error("feed useQuery error.");
-			const body: { books: Book[] | undefined } = await response.json();
-			return body.books;
+			const body: { books: Book[]; nextId: number | null } =
+				await response.json();
+			return body;
+		},
+		{
+			getNextPageParam: (lastPage) => lastPage.nextId ?? undefined,
+			staleTime: 1000000,
 		}
 	);
+
+	useEffect(() => {
+		if (!isLoggedIn) router.replace(`/`);
+		if (inView) fetchNextPage();
+	}, [isLoggedIn, router, inView]);
 
 	if (!isLoading && isError) return <DisplayError />;
 
 	return isLoggedIn ? (
 		<>
+			<Loading loading={isLoading || isFetchingNextPage} />
 			<Head>
 				<title>Book Manager</title>
 				<meta
@@ -48,27 +68,34 @@ const Home: NextPage = () => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<Header />
-			{data && (
-				<div className="container">
-					<div className="title">
-						<span className="registered_book">
-							<span className="info">닉네임:</span> {nickname}
-						</span>
-						<span className="border-line"></span>
-						<span className="registered_book">
-							<span className="info">내가 등록한 책:</span>{" "}
-							{data.filter((book) => book.user_id === uid).length}
-							권
-						</span>
-					</div>
-					<AddBookBox />
-					<div className="books">
-						{data.map((book, _index) => (
-							<BookBox key={book.book_id} book={book} />
-						))}
-					</div>
+
+			<div className="container">
+				<div className="title">
+					<span className="registered_book">
+						<span className="info">닉네임:</span> {nickname}
+					</span>
 				</div>
-			)}
+
+				<AddBookBox />
+
+				<div className="books">
+					{data &&
+						data.pages.map((page, outerIdx) =>
+							page.books.map((book, innerIdx) => {
+								return outerIdx === data.pages.length - 1 &&
+									innerIdx === page.books.length - 1 ? (
+									<BookBox
+										key={book.book_id}
+										book={book}
+										ref={ref}
+									/>
+								) : (
+									<BookBox key={book.book_id} book={book} />
+								);
+							})
+						)}
+				</div>
+			</div>
 			<style jsx>{`
 				.body {
 					text-align: center;
@@ -86,29 +113,23 @@ const Home: NextPage = () => {
 					margin: 5px;
 				}
 
-				.border-line {
-					border-right: 1px solid #dadde1;
-					margin: 10px;
-				}
-
 				.container {
 					margin: 70px 100px 100px 100px;
 				}
 
 				.books {
-					margin: 0px;
-					margin-left: 45px;
+					margin: 0px 0px 0px 45px;
 				}
 
 				.registered_book {
-					font-size: 18px;
+					font-size: 20px;
 					font-family: inherit;
 					letter-spacing: -0.02em;
 				}
 
 				.info {
 					color: gray;
-					font-size: 16px;
+					font-size: 18px;
 				}
 			`}</style>
 		</>
@@ -118,12 +139,21 @@ const Home: NextPage = () => {
 export default Home;
 
 export const getServerSideProps: GetServerSideProps = async (_context) => {
-	const queryClient = new QueryClient();
-	await queryClient.prefetchQuery(["books"], fetchBooks);
+	const queryClient = new QueryClient({
+		defaultOptions: {
+			queries: {
+				staleTime: Infinity,
+			},
+		},
+	});
+	await queryClient.prefetchInfiniteQuery(["books"], () => fetchBooks(0), {
+		getNextPageParam: (lastPage) => lastPage.nextId ?? undefined,
+		staleTime: 1000000,
+	});
 
 	return {
 		props: {
-			dehydratedState: dehydrate(queryClient),
+			dehydratedState: JSON.parse(JSON.stringify(dehydrate(queryClient))),
 		},
 	};
 };

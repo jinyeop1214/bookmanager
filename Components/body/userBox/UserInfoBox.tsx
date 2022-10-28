@@ -9,10 +9,10 @@ import {
 } from "../../../store/reducers/user";
 
 interface UserInfoBoxProps {
-	books: number;
+	booksLen: number;
 }
 
-const UserInfoBox = ({ books }: UserInfoBoxProps) => {
+const UserInfoBox = ({ booksLen }: UserInfoBoxProps) => {
 	const { uid, id, nickname } = useAppSelector(selectUser);
 	const [name, setName] = useState<string>(nickname as string);
 	const isDisable = name === "" || name === nickname;
@@ -75,7 +75,7 @@ const UserInfoBox = ({ books }: UserInfoBoxProps) => {
 				onChange={onChangeNickname}
 			/>
 			<div className="description">등록한 책</div>
-			<div className="books">{books}권</div>
+			<div className="books">{booksLen}권</div>
 			<button
 				className="btn"
 				onClick={isDisable ? undefined : handleModifyUserInfo}

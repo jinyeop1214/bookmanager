@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { forwardRef, useState } from "react";
 import { Book } from "../../../Interfaces";
 import OpenedBookModal from "../bookModal/OpenedBookModal";
 import UpdatedBookModal from "../bookModal/UpdatedBookModal";
@@ -8,7 +8,7 @@ interface BookBoxProps {
 	book: Book;
 }
 
-const BookBox = ({ book }: BookBoxProps) => {
+const BookBox = forwardRef<HTMLDivElement, BookBoxProps>(({ book }, ref) => {
 	const { book_id, bookname, start, end, theme, review, user_id } = book;
 	const [open, setOpen] = useState<Boolean>(false);
 	const [update, setUpdate] = useState<Boolean>(false);
@@ -26,7 +26,7 @@ const BookBox = ({ book }: BookBoxProps) => {
 	const toggleUpdate = () => setUpdate((prev) => !prev);
 
 	return (
-		<>
+		<div className="box" ref={ref}>
 			{open &&
 				(!update ? (
 					<OpenedBookModal
@@ -42,25 +42,13 @@ const BookBox = ({ book }: BookBoxProps) => {
 					/>
 				))}
 			<ClosedBookBox book={newBook} toggleOpen={toggleOpen} />
-		</>
+			<style jsx>{`
+				.box {
+					display: inline-table;
+				}
+			`}</style>
+		</div>
 	);
-
-	// return !open ? ( //닫힘
-	// 	<ClosedBookBox book={newBook} toggleOpen={toggleOpen} />
-	// ) : //열림
-	// !update ? ( //수정
-	// 	<OpenedBox
-	// 		book={newBook}
-	// 		toggleOpen={toggleOpen}
-	// 		toggleUpdate={toggleUpdate}
-	// 	/>
-	// ) : (
-	// 	<UpdatedBox
-	// 		book={newBook}
-	// 		toggleUpdate={toggleUpdate}
-	// 		handleSetNewBook={setNewBook}
-	// 	/>
-	// );
-};
+});
 
 export default BookBox;

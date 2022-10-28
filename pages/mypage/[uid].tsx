@@ -49,7 +49,7 @@ const mypage: NextPage<MyPageProps> = ({ uidParam }) => {
 			<Header />
 			{data && (
 				<div className="container">
-					<UserInfoBox books={data.length} />
+					<UserInfoBox booksLen={data.length} />
 					<div className="books">
 						{data.map((book, _index) => (
 							<BookBox key={book.book_id} book={book} />
@@ -98,7 +98,13 @@ export default mypage;
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const uid = context.params?.uid as string;
 
-	const queryClient = new QueryClient();
+	const queryClient = new QueryClient({
+		defaultOptions: {
+			queries: {
+				staleTime: Infinity,
+			},
+		},
+	});
 	await queryClient.prefetchQuery(["mybooks", `${uid}`], () =>
 		fetchMyBooks(uid)
 	);

@@ -6,8 +6,12 @@ export default async function userHandler(
 	res: NextApiResponse
 ) {
 	try {
-		const books = await fetchBooks();
-		return res.status(200).json({ books });
+		const cursor = !isNaN(Number(req.query.cursor))
+			? Number(req.query.cursor)
+			: 0;
+
+		const { books, nextId } = await fetchBooks(cursor);
+		return res.status(200).json({ books, nextId });
 	} catch (error) {
 		console.log(error);
 		throw new Error("Fetching books API returned Error.");

@@ -12,7 +12,16 @@ import { useState } from "react";
 import Loading from "../components/exceptions/Loading";
 
 function MyApp({ Component, pageProps }: AppProps) {
-	const [queryClient] = useState(() => new QueryClient());
+	const [queryClient] = useState(
+		() =>
+			new QueryClient({
+				defaultOptions: {
+					queries: {
+						staleTime: Infinity,
+					},
+				},
+			})
+	);
 
 	return (
 		<QueryClientProvider client={queryClient}>
