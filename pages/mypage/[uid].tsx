@@ -11,12 +11,16 @@ import Header from "../../components/header/Header";
 import BookBox from "../../components/body/bookBox/BookBox";
 import UserInfoBox from "../../components/body/userBox/UserInfoBox";
 
-const mypage: NextPage = () => {
+interface MyPageProps {
+	uidParam: number;
+}
+
+const mypage: NextPage<MyPageProps> = ({ uidParam }) => {
 	const router = useRouter();
 	const { uid, isLoggedIn, nickname } = useAppSelector(selectUser);
 
 	useEffect(() => {
-		if (!isLoggedIn) router.replace(`/`);
+		if (!isLoggedIn || uid != uidParam) router.replace(`/`);
 	}, [isLoggedIn, router]);
 
 	const { data, isLoading, isError, isFetching } = useQuery(
@@ -76,7 +80,7 @@ const mypage: NextPage = () => {
 
 				.books {
 					margin: 0px;
-					margin-left: 25px;
+					margin-left: 45px;
 				}
 
 				.registered_book {
@@ -93,7 +97,6 @@ export default mypage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const uid = context.params?.uid as string;
-	// if typeof uid != string 에러처리. how?
 
 	const queryClient = new QueryClient();
 	await queryClient.prefetchQuery(["mybooks", `${uid}`], () =>
@@ -103,6 +106,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	return {
 		props: {
 			dehydratedState: dehydrate(queryClient),
+			uidParam: parseInt(uid),
 		},
 	};
 };

@@ -19,3 +19,5 @@ CREATE TABLE `books` (
     `user_id` int(11) NOT NULL,
     PRIMARY KEY (`book_id`)
 );
+
+-- INSERT INTO books(bookname, start, end, theme, review, user_id) VALUES('bookname', '2020-01-01', '2020-01-02', '페칭', '무한 스크롤 구현 ...', 1);

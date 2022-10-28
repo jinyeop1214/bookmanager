@@ -97,7 +97,7 @@ const Home: NextPage = () => {
 
 				.books {
 					margin: 0px;
-					margin-left: 25px;
+					margin-left: 45px;
 				}
 
 				.registered_book {

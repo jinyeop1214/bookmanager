@@ -68,7 +68,7 @@ const Header = () => {
 
 					.icon {
 						vertical-align: middle;
-						width: 38px;
+						width: 30px;
 						display: inline-block;
 					}
 

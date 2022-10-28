@@ -32,8 +32,7 @@ const ClosedBookBox = (props: ClosedBookBoxProps) => {
 			<style jsx>{`
 				.box {
 					display: inline-table;
-					margin: 30px 0px;
-					margin-right: 45px;
+					margin: 30px 30px 30px 0px;
 					width: 300px;
 					padding: 20px 20px 15px 20px;
 					background-color: white;
