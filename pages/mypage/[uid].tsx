@@ -15,13 +15,13 @@ interface MyPageProps {
 	uidParam: number;
 }
 
-const mypage: NextPage<MyPageProps> = ({ uidParam }) => {
+const Mypage: NextPage<MyPageProps> = ({ uidParam }) => {
 	const router = useRouter();
 	const { uid, isLoggedIn, nickname } = useAppSelector(selectUser);
 
 	useEffect(() => {
 		if (!isLoggedIn || uid != uidParam) router.replace(`/`);
-	}, [isLoggedIn, router]);
+	}, [isLoggedIn, router, uid, uidParam]);
 
 	const { data, isLoading, isError, isFetching } = useQuery(
 		["mybooks", `${uid}`],
@@ -43,7 +43,7 @@ const mypage: NextPage<MyPageProps> = ({ uidParam }) => {
 	return isLoggedIn ? (
 		<>
 			<Head>
-				<title>Book Manager - {nickname}'s page</title>
+				<title>Book Manager - {nickname}&apos;s page</title>
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<Header />
@@ -70,7 +70,7 @@ const mypage: NextPage<MyPageProps> = ({ uidParam }) => {
 				}
 
 				.title {
-					border-bottom: 1px solid darkblue;
+					border-bottom: 1px solid rgba(0, 0, 139, 0.4);
 					margin: 5px;
 				}
 				.container {
@@ -93,15 +93,16 @@ const mypage: NextPage<MyPageProps> = ({ uidParam }) => {
 	) : null;
 };
 
-export default mypage;
+export default Mypage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const uid = context.params?.uid as string;
-
 	const queryClient = new QueryClient({
 		defaultOptions: {
 			queries: {
-				staleTime: Infinity,
+				staleTime: 1000 * 60,
+				refetchOnWindowFocus: false,
+				cacheTime: 1000 * 60 * 60,
 			},
 		},
 	});

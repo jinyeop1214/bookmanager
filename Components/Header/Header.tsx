@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 import { useDispatch } from "react-redux";
@@ -32,7 +33,7 @@ const Header = () => {
 			</div>
 			<div>
 				<span className="btn-mypage" onClick={handleMyPage}>
-					<img className="icon" src="/user.png" />
+					{/* <Image className="icon" src="/user.png" alt="userIcon" /> */}
 					<span className="text">My Page</span>
 				</span>
 				<span className="border-line"></span>
@@ -46,8 +47,15 @@ const Header = () => {
 						display: grid;
 						grid-auto-flow: column;
 						grid-template-columns: 1fr 5fr 1fr;
-						padding: 30px 20px 20px 20px;
+						padding: 40px 20px 20px 20px;
 						text-align: center;
+						background: white;
+						z-index: 4;
+						position: sticky;
+						top: -20px;
+						right: 0;
+						left: 0;
+						border-bottom: 1px solid rgb(0, 0, 139, 0.4);
 					}
 
 					.logo-btn {

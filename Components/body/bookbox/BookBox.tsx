@@ -51,4 +51,6 @@ const BookBox = forwardRef<HTMLDivElement, BookBoxProps>(({ book }, ref) => {
 	);
 });
 
+BookBox.displayName = "BookBox";
+
 export default BookBox;

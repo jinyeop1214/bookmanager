@@ -1,7 +1,7 @@
 import { Book } from "../Interfaces";
 import { executeQuery } from "../schema/Database";
 
-const SIZE = 10;
+const SIZE = 30;
 
 export const fetchBooks = async (cursor: number) => {
 	try {

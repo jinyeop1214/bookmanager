@@ -44,13 +44,14 @@ const AddBookBox = () => {
 				setTheme("");
 				setReview("");
 
-				queryClient.setQueryData(
-					["books"],
-					(prev: Book[] | undefined): Book[] | undefined => [
-						...(prev ?? []),
-						data.book,
-					]
-				);
+				// queryClient.setQueryData(
+				// 	["books"],
+				// 	(prev: Book[] | undefined): Book[] | undefined => [
+				// 		...(prev ?? []),
+				// 		data.book,
+				// 	]
+				// );
+				queryClient.invalidateQueries(["books"]);
 			},
 		}
 	);

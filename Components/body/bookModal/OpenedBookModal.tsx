@@ -36,8 +36,6 @@ const OpenedBookModal = (props: OpenedBookModalProps) => {
 		}
 	);
 
-	if (!isLoading && isError) return <DisplayError />;
-
 	const deleteBookMutation = useMutation(
 		async (book_id: number) => {
 			const response = await fetch(`/api/book/${book_id}`, {
@@ -59,6 +57,8 @@ const OpenedBookModal = (props: OpenedBookModalProps) => {
 			},
 		}
 	);
+
+	if (!isLoading && isError) return <DisplayError />;
 
 	const handleDeleteBook = async () => {
 		const ok = confirm("정말로 삭제하나요?");

@@ -10,6 +10,7 @@ import {
 } from "@tanstack/react-query";
 import { useState } from "react";
 import Loading from "../components/exceptions/Loading";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 function MyApp({ Component, pageProps }: AppProps) {
 	const [queryClient] = useState(
@@ -17,25 +18,25 @@ function MyApp({ Component, pageProps }: AppProps) {
 			new QueryClient({
 				defaultOptions: {
 					queries: {
-						staleTime: Infinity,
+						staleTime: 1000 * 60,
+						refetchOnWindowFocus: false,
+						cacheTime: 1000 * 60 * 60,
 					},
 				},
 			})
 	);
 
 	return (
-		<QueryClientProvider client={queryClient}>
-			<Hydrate state={pageProps.dehydratedState}>
-				<Provider store={store}>
-					<PersistGate
-						persistor={persistor}
-						loading={<Loading loading={true} />}
-					>
+		<Provider store={store}>
+			<PersistGate persistor={persistor} loading={null}>
+				<QueryClientProvider client={queryClient}>
+					<Hydrate state={pageProps.dehydratedState}>
 						<Component {...pageProps} />
-					</PersistGate>
-				</Provider>
-			</Hydrate>
-		</QueryClientProvider>
+					</Hydrate>
+					<ReactQueryDevtools initialIsOpen={false} />
+				</QueryClientProvider>
+			</PersistGate>
+		</Provider>
 	);
 }
 

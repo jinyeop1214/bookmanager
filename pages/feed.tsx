@@ -3,7 +3,7 @@ import {
 	QueryClient,
 	useInfiniteQuery,
 } from "@tanstack/react-query";
-import type { GetServerSideProps, NextPage } from "next";
+import type { GetServerSideProps, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -45,14 +45,14 @@ const Home: NextPage = () => {
 		},
 		{
 			getNextPageParam: (lastPage) => lastPage.nextId ?? undefined,
-			staleTime: 1000000,
+			staleTime: Infinity,
 		}
 	);
 
 	useEffect(() => {
 		if (!isLoggedIn) router.replace(`/`);
 		if (inView) fetchNextPage();
-	}, [isLoggedIn, router, inView]);
+	}, [isLoggedIn, router, inView, fetchNextPage]);
 
 	if (!isLoading && isError) return <DisplayError />;
 
@@ -109,7 +109,7 @@ const Home: NextPage = () => {
 				}
 
 				.title {
-					border-bottom: 1px solid darkblue;
+					border-bottom: 1px solid rgba(0, 0, 139, 0.4);
 					margin: 5px;
 				}
 
@@ -138,22 +138,28 @@ const Home: NextPage = () => {
 
 export default Home;
 
-export const getServerSideProps: GetServerSideProps = async (_context) => {
+export const getStaticProps: GetStaticProps = async () => {
 	const queryClient = new QueryClient({
 		defaultOptions: {
 			queries: {
-				staleTime: Infinity,
+				staleTime: 1000 * 60,
+				refetchOnWindowFocus: false,
+				cacheTime: 1000 * 60 * 60,
 			},
 		},
 	});
 	await queryClient.prefetchInfiniteQuery(["books"], () => fetchBooks(0), {
 		getNextPageParam: (lastPage) => lastPage.nextId ?? undefined,
-		staleTime: 1000000,
 	});
+
+	queryClient.setQueryData(["books"], (data: any) => ({
+		...data,
+		pageParams: [null],
+	}));
 
 	return {
 		props: {
-			dehydratedState: JSON.parse(JSON.stringify(dehydrate(queryClient))),
+			dehydratedState: dehydrate(queryClient),
 		},
 	};
 };
