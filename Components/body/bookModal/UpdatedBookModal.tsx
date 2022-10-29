@@ -46,15 +46,16 @@ const UpdatedBookModal = (props: UpdatedBookModalProps) => {
 				toggleUpdate();
 				handleSetNewBook({ ...props.book, ...variables }); //?
 
-				queryClient.setQueriesData(
-					["books"],
-					(prev: Book[] | undefined): Book[] | undefined =>
-						prev?.map((book) =>
-							book.book_id === book_id
-								? { ...book, ...variables }
-								: book
-						)
-				);
+				// queryClient.setQueriesData(
+				// 	["books"],
+				// 	(prev: Book[] | undefined): Book[] | undefined =>
+				// 		prev?.map((book) =>
+				// 			book.book_id === book_id
+				// 				? { ...book, ...variables }
+				// 				: book
+				// 		)
+				// );
+				queryClient.invalidateQueries(["books"]);
 			},
 		}
 	);

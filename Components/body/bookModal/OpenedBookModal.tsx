@@ -49,11 +49,12 @@ const OpenedBookModal = (props: OpenedBookModalProps) => {
 				throw new Error("deleteBookMutation Error.");
 			},
 			onSuccess: (_data, variables, _context) => {
-				queryClient.setQueriesData(
-					["books"],
-					(prev: Book[] | undefined): Book[] | undefined =>
-						prev?.filter((book) => book.book_id !== variables)
-				);
+				// queryClient.setQueriesData(
+				// 	["books"],
+				// 	(prev: Book[] | undefined): Book[] | undefined =>
+				// 		prev?.filter((book) => book.book_id !== variables)
+				// );
+				queryClient.invalidateQueries(["books"]);
 			},
 		}
 	);
