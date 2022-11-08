@@ -9,8 +9,6 @@ import {
 	QueryClientProvider,
 } from "@tanstack/react-query";
 import { useState } from "react";
-import Loading from "../components/exceptions/Loading";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 function MyApp({ Component, pageProps }: AppProps) {
 	const [queryClient] = useState(
@@ -33,7 +31,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 					<Hydrate state={pageProps.dehydratedState}>
 						<Component {...pageProps} />
 					</Hydrate>
-					<ReactQueryDevtools initialIsOpen={false} />
 				</QueryClientProvider>
 			</PersistGate>
 		</Provider>
