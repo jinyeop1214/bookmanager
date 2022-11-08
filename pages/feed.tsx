@@ -3,7 +3,7 @@ import {
 	QueryClient,
 	useInfiniteQuery,
 } from "@tanstack/react-query";
-import type { GetServerSideProps, GetStaticProps, NextPage } from "next";
+import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
