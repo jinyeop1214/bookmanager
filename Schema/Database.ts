@@ -14,7 +14,10 @@ interface executeQueryProps {
 	values: Array<any>;
 }
 
-export const executeQuery = async ({ query, values }: executeQueryProps) => {
+export const executeQuery: any = async ({
+	query,
+	values,
+}: executeQueryProps) => {
 	try {
 		const result = await db.query<any>(query, values);
 		await db.end();
